@@ -9,4 +9,26 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  
+  <servlet>
+  	<servlet-name>AddComputer</servlet-name>
+  	<servlet-class>com.excilys.computerDatabase.servlet.AddComputer</servlet-class>
+  </servlet>
+  
+  <servlet>
+  	<servlet-name>ListComputer</servlet-name>
+  	<servlet-class>com.excilys.computerDatabase.servlet.ListComputer</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>AddComputer</servlet-name>
+  	<url-pattern>/addComputer</url-pattern>  	
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>ListComputer</servlet-name>
+  	<url-pattern>/ListComputer</url-pattern>  	
+  </servlet-mapping>
+  
+
 </web-app>
