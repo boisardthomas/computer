@@ -3,7 +3,7 @@
 
 	<h1>Add Computer</h1>
 	
-	<form action="addComputer.jsp" method="POST">
+	<form action="addComputer" method="POST">
 		<fieldset>
 			<div class="clearfix">
 				<label for="name">Computer name:</label>
