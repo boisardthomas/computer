@@ -20,7 +20,7 @@ public class ComputerDAO {
 			
 			Statement st = cn.createStatement();
 			
-			String req = "select cpt.name, cpt.introduced, cpt.discontinued, cpny.name from company as cpny, computer as cpt where cpt.company_id=cpny.id or cpt.company_id=NULL;";
+			String req = "select cpt.name, cpt.introduced, cpt.discontinued, cpny.name from computer as cpt inner join company as cpny on cpt.company_id=cpny.id;";
 			
 			ResultSet rs = st.executeQuery(req);
 			
