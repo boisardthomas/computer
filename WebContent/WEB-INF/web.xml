@@ -11,24 +11,29 @@
   </welcome-file-list>
   
   <servlet>
-  	<servlet-name>AddComputer</servlet-name>
-  	<servlet-class>com.excilys.computerDatabase.servlet.AddComputer</servlet-class>
+    <servlet-name>AddComputer</servlet-name>
+    <servlet-class>com.excilys.computerDatabase.servlet.AddComputer</servlet-class>
   </servlet>
-  
   <servlet>
-  	<servlet-name>ListComputer</servlet-name>
-  	<servlet-class>com.excilys.computerDatabase.servlet.ListComputer</servlet-class>
+    <servlet-name>ListComputer</servlet-name>
+    <servlet-class>com.excilys.computerDatabase.servlet.ListComputer</servlet-class>
   </servlet>
-  
+  <servlet>
+  	<servlet-name>UpdateComputer</servlet-name>
+  	<servlet-class>com.excilys.computerDatabase.servlet.UpdateComputer</servlet-class>
+  </servlet>
+    
   <servlet-mapping>
-  	<servlet-name>AddComputer</servlet-name>
-  	<url-pattern>/addComputer</url-pattern>  	
+    <servlet-name>AddComputer</servlet-name>
+    <url-pattern>/addComputer</url-pattern>
   </servlet-mapping>
-  
   <servlet-mapping>
-  	<servlet-name>ListComputer</servlet-name>
-  	<url-pattern>/ListComputer</url-pattern>  	
+    <servlet-name>ListComputer</servlet-name>
+    <url-pattern>/ListComputer</url-pattern>
   </servlet-mapping>
-  
-
+  <servlet-mapping>
+  	<servlet-name>UpdateComputer</servlet-name>
+  	<url-pattern>/updateComputer</url-pattern>
+  </servlet-mapping>
+    
 </web-app>
