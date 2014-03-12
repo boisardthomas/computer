@@ -1,4 +1,6 @@
 <jsp:include page="include/header.jsp" />
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <section id="main">
 
 	<h1>Add Computer</h1>
@@ -16,14 +18,14 @@
 			<div class="clearfix">
 				<label for="introduced">Introduced date:</label>
 				<div class="input">
-					<input type="date" name="introducedDate" pattern="YYYY-MM-dd"/>
+					<input type="date" name="introducedDate" pattern="\d{1,2}/\d{1,2}/\d{4}"/>
 					<span class="help-inline">YYYY-MM-DD</span>
 				</div>
 			</div>
 			<div class="clearfix">
 				<label for="discontinued">Discontinued date:</label>
 				<div class="input">
-					<input type="date" name="discontinuedDate" pattern="YYYY-MM-dd"/>
+					<input type="date" name="discontinuedDate" pattern="\d{1,2}/\d{1,2}/\d{4}"/>
 					<span class="help-inline">YYYY-MM-DD</span>
 				</div>
 			</div>
@@ -31,10 +33,9 @@
 				<label for="company">Company Name:</label>
 				<div class="input">
 					<select name="company">
-						<option value="0">--</option>
-						<option value="1">Apple</option>
-						<option value="2">Dell</option>
-						<option value="3">Lenovo</option>
+						<c:forEach var="comp" items="${companies}">
+							<option value="${comp.id}"><c:out value="${comp.name}"></c:out></option>						
+						</c:forEach>
 					</select>
 				</div>
 			</div>

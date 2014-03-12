@@ -1,14 +1,16 @@
 package com.excilys.computerDatabase.bean;
 
+import java.util.Date;
+
 public class Computer {
 
 	private String name;
-	private String introducedDate;
-	private String discontinuedDate;
+	private Date introducedDate;
+	private Date discontinuedDate;
 	private String Company;
 	
-	public Computer(String name, String introducedDate,
-			String discontinuedDate, String company) {
+	public Computer(String name, Date introducedDate,
+			Date discontinuedDate, String company) {
 		super();
 		this.name = name;
 		this.introducedDate = introducedDate;
@@ -24,19 +26,19 @@ public class Computer {
 		this.name = name;
 	}
 
-	public String getIntroducedDate() {
+	public Date getIntroducedDate() {
 		return introducedDate;
 	}
 
-	public void setIntroducedDate(String introducedDate) {
+	public void setIntroducedDate(Date introducedDate) {
 		this.introducedDate = introducedDate;
 	}
 
-	public String getDiscontinuedDate() {
+	public Date getDiscontinuedDate() {
 		return discontinuedDate;
 	}
 
-	public void setDiscontinuedDate(String discontinuedDate) {
+	public void setDiscontinuedDate(Date discontinuedDate) {
 		this.discontinuedDate = discontinuedDate;
 	}
 

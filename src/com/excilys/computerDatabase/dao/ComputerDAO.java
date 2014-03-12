@@ -1,11 +1,11 @@
 package com.excilys.computerDatabase.dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.excilys.computerDatabase.bean.Computer;
 import com.excilys.computerDatabase.jdbc.ComputerDatabase;
@@ -21,13 +21,13 @@ public class ComputerDAO {
 						
 			String req = "select cpt.name, cpt.introduced, cpt.discontinued, cpny.name from computer as cpt left outer join company as cpny on cpt.company_id=cpny.id;";
 			
-			Statement st = cn.prepareStatement(req);
+			PreparedStatement st = cn.prepareStatement(req);
 			
-			ResultSet rs = st.executeQuery(req);
+			ResultSet rs = st.executeQuery();
 			
 			while(rs.next())
 			{
-				Computer c = new Computer (rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4));
+				Computer c = new Computer (rs.getString(1),rs.getDate(2),rs.getDate(3),rs.getString(4));
 				computerArray.add(c);
 			}
 			
@@ -42,9 +42,30 @@ public class ComputerDAO {
 		return computerArray;
 	}
 	
-	public void addComputer(String name, String intro, String disc, int company)
+	public void addComputer(String name, Date intro, Date disc, int company)
 	{
-		
+		try {
+			Connection cn = ComputerDatabase.getInstance();
+						
+			String req = "insert into computer values(default,?,?,?,?)";
+			
+			PreparedStatement st = cn.prepareStatement(req);
+			
+			st.setString(1, name);
+			st.setDate(2, new java.sql.Date(intro.getTime()));
+			st.setDate(3, new java.sql.Date(disc.getTime()));
+			st.setInt(4, company);
+			
+			st.executeUpdate();
+			
+			st.close();
+			cn=null;			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
 	}
+	
+	
 
 }
