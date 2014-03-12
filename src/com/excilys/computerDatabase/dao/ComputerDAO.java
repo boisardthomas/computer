@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import com.excilys.computerDatabase.bean.Computer;
 import com.excilys.computerDatabase.jdbc.ComputerDatabase;
 
 public class ComputerDAO {
@@ -18,7 +19,7 @@ public class ComputerDAO {
 		try {
 			Connection cn = ComputerDatabase.getInstance();
 						
-			String req = "select cpt.name, cpt.introduced, cpt.discontinued, cpny.name from computer as cpt left outer inner join company as cpny on cpt.company_id=cpny.id;";
+			String req = "select cpt.name, cpt.introduced, cpt.discontinued, cpny.name from computer as cpt left outer join company as cpny on cpt.company_id=cpny.id;";
 			
 			Statement st = cn.prepareStatement(req);
 			
@@ -32,7 +33,7 @@ public class ComputerDAO {
 			
 			st.close();
 			rs.close();
-			cn.close();			
+			cn=null;			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

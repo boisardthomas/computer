@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.excilys.computerDatabase.dao.Computer;
+import com.excilys.computerDatabase.bean.Computer;
 import com.excilys.computerDatabase.dao.ComputerDAO;
 
 public class ListComputer extends HttpServlet {

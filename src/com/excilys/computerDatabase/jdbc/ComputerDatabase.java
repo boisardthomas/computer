@@ -13,7 +13,8 @@ public class ComputerDatabase {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			
-			cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull","thomas","thomas");
+			cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull"
+					,"thomas","thomas");
 			
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block

@@ -1,4 +1,4 @@
-package com.excilys.computerDatabase.dao;
+package com.excilys.computerDatabase.bean;
 
 public class Computer {
 
