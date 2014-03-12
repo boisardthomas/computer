@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import com.excilys.computerDatabase.jdbc.ComputerDatabase;
+
 public class ComputerDAO {
 
 	public ArrayList<Computer> getListComputer()
@@ -14,13 +16,11 @@ public class ComputerDAO {
 		ArrayList<Computer> computerArray = new ArrayList<>();
 		
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
+			Connection cn = ComputerDatabase.getInstance();
+						
+			String req = "select cpt.name, cpt.introduced, cpt.discontinued, cpny.name from computer as cpt left outer inner join company as cpny on cpt.company_id=cpny.id;";
 			
-			Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull","thomas","thomas");
-			
-			Statement st = cn.createStatement();
-			
-			String req = "select cpt.name, cpt.introduced, cpt.discontinued, cpny.name from computer as cpt inner join company as cpny on cpt.company_id=cpny.id;";
+			Statement st = cn.prepareStatement(req);
 			
 			ResultSet rs = st.executeQuery(req);
 			
@@ -33,7 +33,7 @@ public class ComputerDAO {
 			st.close();
 			rs.close();
 			cn.close();			
-		} catch (ClassNotFoundException | SQLException e) {
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
