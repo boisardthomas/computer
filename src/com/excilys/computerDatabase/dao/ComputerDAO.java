@@ -13,16 +13,45 @@ import com.excilys.computerDatabase.jdbc.ComputerDatabase;
 
 public class ComputerDAO {
 
-	public ArrayList<Computer> getListComputer()
+	public ArrayList<Computer> getListComputer(String search, String typeOrd, String ord)
 	{
 		ArrayList<Computer> computerArray = new ArrayList<>();
 		
 		try {
 			Connection cn = ComputerDatabase.getInstance();
 						
-			String req = "select cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cpny.name from computer as cpt left outer join company as cpny on cpt.company_id=cpny.id;";
+			StringBuilder sb = new StringBuilder();
+			sb.append("select cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cpny.name from computer as cpt left outer join company as cpny on cpt.company_id=cpny.id where cpt.name like '%");
+			sb.append(search);
+			sb.append("%' or cpny.name like '%");
+			sb.append(search);
+			sb.append("%'");
 			
-			PreparedStatement st = cn.prepareStatement(req);
+			if(typeOrd!=null && !typeOrd.equals("") && ord!=null && !ord.equals(""))
+			{
+				sb.append(" group by ");
+				
+				switch(typeOrd)
+				{
+					case "comp_name":
+						sb.append("cpt.name");
+						break;
+					case "comp_intro":
+						sb.append("cpt.introduced");
+						break;
+					case "comp_disc":
+						sb.append("cpt.discontinued");
+						break;
+					case "cpny_name":
+						sb.append("cpny.name");
+						break;
+				}
+				sb.append(" ");
+				sb.append(ord);
+			}
+			
+			PreparedStatement st = cn.prepareStatement(sb.toString());
+			//st.setString(1, search);
 			
 			ResultSet rs = st.executeQuery();
 			

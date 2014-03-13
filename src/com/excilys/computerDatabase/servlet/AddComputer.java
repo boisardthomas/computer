@@ -40,11 +40,9 @@ public class AddComputer extends HttpServlet{
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		try {
-			intro = sdf.parse(req.getParameter("introducedDate"));
-			
+			intro = sdf.parse(req.getParameter("introducedDate"));	
 		} catch (ParseException e1) {
-			intro = new Date(0);
-			
+			intro = new Date(0);			
 		}
 		
 		try

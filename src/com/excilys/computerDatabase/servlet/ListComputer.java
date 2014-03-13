@@ -17,19 +17,19 @@ public class ListComputer extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		
+		String search = req.getParameter("search");
+		String typeOrd = req.getParameter("typeOrd");
+		String ord = req.getParameter("ord");
+		
 		ComputerDAO cdao= new ComputerDAO();
-		ArrayList<Computer> computerArray = cdao.getListComputer();
-				
+		ArrayList<Computer> computerArray = cdao.getListComputer(search,typeOrd,ord);
+		
 		req.setAttribute("computerList", computerArray);
 				
 		req.getRequestDispatcher("/WEB-INF/dashboard.jsp").forward(req, resp);
 	}
 
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		super.doPost(req, resp);
-	}
+
 	
 }

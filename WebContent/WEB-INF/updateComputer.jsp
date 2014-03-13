@@ -3,7 +3,7 @@
 
 <section id="main">
 
-	<h1>Add Computer</h1>
+	<h1>Update Computer</h1>
 	
 	<form action="updateComputer" method="POST">
 		<fieldset>

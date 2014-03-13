@@ -3,11 +3,17 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <section id="main">
+
+<c:set var="nbComputer" value="${computerList.size()}" />
+<c:set var="nbOfPageF" value="${nbComputer/15.0}" />
+<fmt:parseNumber var="nbOfPage" integerOnly="true" value="${nbOfPageF+(1-(nbOfPageF%1))%1}" /><%-- ${N+(1-(N%1))%1} --%>
+
 	<h1 id="homeTitle"><c:out value="${computerList.size()}"></c:out> Computers found</h1>
 	<div id="actions">
-		<form action="" method="GET">
+		<form action="ListComputer" method="GET">
 			<input type="search" id="searchbox" name="search"
-				value="" placeholder="Search name">
+				value="${param.search}" placeholder="Search name">
+			<input type="hidden" name="page" value="1">
 			<input type="submit" id="searchsubmit"
 				value="Filter by name"
 				class="btn primary">
@@ -20,13 +26,13 @@
 				<tr>
 					<!-- Variable declarations for passing labels as parameters -->
 					<!-- Table header for Computer Name -->
-					<th>Computer Name</th>
-					<th>Introduced Date</th>
+					<th class="col2">Computer Name</th>
+					<th class="col3">Introduced Date</th>
 					<!-- Table header for Discontinued Date -->
-					<th>Discontinued Date</th>
+					<th class="col3">Discontinued Date</th>
 					<!-- Table header for Company -->
-					<th>Company</th>
-					<th>modification</th>
+					<th class="col5">Company</th>
+					<th class="col5">modification</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -48,16 +54,20 @@
 		
 		<table>
 			<tr>
-				<c:set var="nbComputer" value="${computerList.size()}" />
-				<c:set var="nbOfPageF" value="${nbComputer/15.0}" />
-				<fmt:parseNumber var="nbOfPage" integerOnly="true" value="${nbOfPageF+(1-(nbOfPageF%1))%1}" /><%-- ${N+(1-(N%1))%1} --%>
 				<c:set var="pages" value="${param.page}" />
 				<c:if test="${pages !=1}">
-					<a href="ListComputer?page=<c:out value="${pages-1}"></c:out>">previous</a>
+					<a href="ListComputer?page=1&search=<c:out value="${param.search}"></c:out>
+					&typeOrd=<c:out value="${param.typeOrd}"></c:out>&ord=<c:out value="${param.ord}"></c:out>">1</a><bq>
+					<a href="ListComputer?page=<c:out value="${pages-1}"></c:out>&search=<c:out value="${param.search}"></c:out>
+					&typeOrd=<c:out value="${param.typeOrd}"></c:out>&ord=<c:out value="${param.ord}"></c:out>">previous</a>
 				</c:if>
 				Page : <c:out value="${pages}"></c:out> sur <c:out value="${nbOfPage}"></c:out>
 				<c:if test="${pages lt nbOfPage}">
-					<a href="ListComputer?page=<c:out value="${pages+1}"></c:out>">next</a>
+					<a href="ListComputer?page=<c:out value="${pages+1}"></c:out>&search=<c:out value="${param.search}"></c:out>
+					&typeOrd=<c:out value="${param.typeOrd}"></c:out>&ord=<c:out value="${param.ord}"></c:out>">next</a><bq>
+					<a href="ListComputer?page=<c:out value="${nbOfPage}"></c:out>&search=<c:out value="${param.search}"></c:out>
+					&typeOrd=<c:out value="${param.typeOrd}"></c:out>&ord=<c:out value="${param.ord}"></c:out>">
+					<c:out value="${nbOfPage}"></c:out></a>
 				</c:if>
 			</tr>
 		</table>
