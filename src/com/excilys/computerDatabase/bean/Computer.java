@@ -4,18 +4,28 @@ import java.util.Date;
 
 public class Computer {
 
+	private int id;
 	private String name;
 	private Date introducedDate;
 	private Date discontinuedDate;
 	private String Company;
 	
-	public Computer(String name, Date introducedDate,
+	public Computer(int id, String name, Date introducedDate,
 			Date discontinuedDate, String company) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.introducedDate = introducedDate;
 		this.discontinuedDate = discontinuedDate;
 		Company = company;
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getName() {

@@ -19,9 +19,9 @@ public class ListComputer extends HttpServlet {
 		// TODO Auto-generated method stub
 		ComputerDAO cdao= new ComputerDAO();
 		ArrayList<Computer> computerArray = cdao.getListComputer();
-		
+				
 		req.setAttribute("computerList", computerArray);
-		
+				
 		req.getRequestDispatcher("/WEB-INF/dashboard.jsp").forward(req, resp);
 	}
 

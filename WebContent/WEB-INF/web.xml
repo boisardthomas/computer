@@ -9,7 +9,6 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-  
   <servlet>
     <servlet-name>AddComputer</servlet-name>
     <servlet-class>com.excilys.computerDatabase.servlet.AddComputer</servlet-class>
@@ -19,10 +18,14 @@
     <servlet-class>com.excilys.computerDatabase.servlet.ListComputer</servlet-class>
   </servlet>
   <servlet>
-  	<servlet-name>UpdateComputer</servlet-name>
-  	<servlet-class>com.excilys.computerDatabase.servlet.UpdateComputer</servlet-class>
+    <servlet-name>UpdateComputer</servlet-name>
+    <servlet-class>com.excilys.computerDatabase.servlet.UpdateComputer</servlet-class>
   </servlet>
-    
+  <servlet>
+  	<servlet-name>DeleteComputer</servlet-name>
+  	<servlet-class>com.excilys.computerDatabase.servlet.DeleteComputer</servlet-class>
+  </servlet>
+  
   <servlet-mapping>
     <servlet-name>AddComputer</servlet-name>
     <url-pattern>/addComputer</url-pattern>
@@ -32,8 +35,13 @@
     <url-pattern>/ListComputer</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-  	<servlet-name>UpdateComputer</servlet-name>
-  	<url-pattern>/updateComputer</url-pattern>
+    <servlet-name>UpdateComputer</servlet-name>
+    <url-pattern>/updateComputer</url-pattern>
   </servlet-mapping>
-    
+  <servlet-mapping>
+  	<servlet-name>DeleteComputer</servlet-name>
+  	<url-pattern>/deleteComputer</url-pattern>
+  </servlet-mapping>
+  
+  
 </web-app>
