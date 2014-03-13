@@ -24,7 +24,7 @@ public class AddComputer extends HttpServlet{
 		ArrayList<Company> companyArray = cdao.getListCompany();
 		
 		req.setAttribute("companies", companyArray);		
-		req.getRequestDispatcher("addComputer.jsp").forward(req, resp);
+		req.getRequestDispatcher("/WEB-INF/addComputer.jsp").forward(req, resp);
 	}
 
 	@SuppressWarnings({ "deprecation", "deprecation" })
@@ -70,7 +70,7 @@ public class AddComputer extends HttpServlet{
 		
 		cdao.addComputer(name, intro, disc, id_comp);
 		
-		req.getRequestDispatcher("index.jsp").forward(req, resp);
+		req.getRequestDispatcher("/WEB-INF/index.jsp").forward(req, resp);
 	}
 	
 	

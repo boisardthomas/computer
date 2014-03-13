@@ -22,7 +22,7 @@ public class ListComputer extends HttpServlet {
 		
 		req.setAttribute("computerList", computerArray);
 		
-		req.getRequestDispatcher("dashboard.jsp").forward(req, resp);
+		req.getRequestDispatcher("/WEB-INF/dashboard.jsp").forward(req, resp);
 	}
 
 	@Override
