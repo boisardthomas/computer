@@ -9,11 +9,16 @@ import java.util.ArrayList;
 import com.excilys.computerDatabase.bean.Company;
 import com.excilys.computerDatabase.bean.Computer;
 import com.excilys.computerDatabase.jdbc.ComputerDatabase;
+import org.slf4j.*;
 
 public class CompanyDAO {
 
+	Logger log = LoggerFactory.getLogger(CompanyDAO.class);
+	
 	public ArrayList<Company> getListCompany()
 	{
+		log.info("start search for company");
+		
 		ArrayList<Company> companyArray = new ArrayList<>();
 		
 		try {
@@ -38,6 +43,8 @@ public class CompanyDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
+		
+		log.info("end of search for company");
 		
 		return companyArray;
 	}

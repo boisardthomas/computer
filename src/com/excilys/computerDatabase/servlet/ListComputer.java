@@ -21,12 +21,14 @@ public class ListComputer extends HttpServlet {
 		String search = req.getParameter("search");
 		String typeOrd = req.getParameter("typeOrd");
 		String ord = req.getParameter("ord");
+		int page = Integer.parseInt(req.getParameter("page"));		
 		
 		ComputerDAO cdao= new ComputerDAO();
-		ArrayList<Computer> computerArray = cdao.getListComputer(search,typeOrd,ord);
+		ArrayList<Computer> computerArray = cdao.getListComputer(search,typeOrd,ord,page);
 		
 		req.setAttribute("computerList", computerArray);
-				
+		req.setAttribute("nbOfComputer", cdao.nbComputer(search));
+		
 		req.getRequestDispatcher("/WEB-INF/dashboard.jsp").forward(req, resp);
 	}
 

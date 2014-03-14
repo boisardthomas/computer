@@ -4,11 +4,11 @@
 
 <section id="main">
 
-<c:set var="nbComputer" value="${computerList.size()}" />
+<c:set var="nbComputer" value="${nbOfComputer}" />
 <c:set var="nbOfPageF" value="${nbComputer/15.0}" />
 <fmt:parseNumber var="nbOfPage" integerOnly="true" value="${nbOfPageF+(1-(nbOfPageF%1))%1}" /><%-- ${N+(1-(N%1))%1} --%>
 
-	<h1 id="homeTitle"><c:out value="${computerList.size()}"></c:out> Computers found</h1>
+	<h1 id="homeTitle"><c:out value="${nbComputer}"></c:out> Computers found</h1>
 	<div id="actions">
 		<form action="ListComputer" method="GET">
 			<input type="search" id="searchbox" name="search"
@@ -26,18 +26,22 @@
 				<tr>
 					<!-- Variable declarations for passing labels as parameters -->
 					<!-- Table header for Computer Name -->
-					<th class="col2">Computer Name</th>
-					<th class="col3">Introduced Date</th>
+					<th class="col2"><a href="ListComputer?page=1&search=<c:out value="${param.search}"></c:out>
+					&typeOrd=comp_name&ord=asc">Computer Name</a></th>
+					<th class="col3"><a href="ListComputer?page=1&search=<c:out value="${param.search}"></c:out>
+					&typeOrd=comp_intro&ord=asc">Introduced Date</a></th>
 					<!-- Table header for Discontinued Date -->
-					<th class="col3">Discontinued Date</th>
+					<th class="col3"><a href="ListComputer?page=1&search=<c:out value="${param.search}"></c:out>
+					&typeOrd=comp_disc&ord=asc">Discontinued Date</a></th>
 					<!-- Table header for Company -->
-					<th class="col5">Company</th>
+					<th class="col5"><a href="ListComputer?page=1&search=<c:out value="${param.search}"></c:out>
+					&typeOrd=cpny_name&ord=asc">Company</a></th>
 					<th class="col5">modification</th>
 				</tr>
 			</thead>
 			<tbody>
 				
-				<c:forEach var="comp" items="${computerList}" begin="${(param.page-1)*15}" end="${(param.page-1)*15+15}">
+				<c:forEach var="comp" items="${computerList}" >
 					<tr>
 						<td><c:out value="${comp.name}"></c:out></td>
 						<td><c:out value="${comp.introducedDate}"></c:out></td>

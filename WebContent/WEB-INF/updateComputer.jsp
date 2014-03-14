@@ -43,7 +43,7 @@
 		</fieldset>
 		<div class="actions">
 			<input type="submit" value="Modify" class="btn primary">
-			or <a href="ListComputer" class="btn">Cancel</a>
+			or <a href="ListComputer?page=1&search=" class="btn">Cancel</a>
 		</div>
 	</form>
 </section>
