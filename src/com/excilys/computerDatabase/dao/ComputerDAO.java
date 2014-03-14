@@ -8,17 +8,27 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.computerDatabase.bean.Computer;
 import com.excilys.computerDatabase.jdbc.ComputerDatabase;
 
 public class ComputerDAO {
 
-	public ArrayList<Computer> getListComputer(String search, String typeOrd, String ord)
+	Logger log = LoggerFactory.getLogger(CompanyDAO.class);
+	
+	public ArrayList<Computer> getListComputer(String search, String typeOrd, String ord, int page)
 	{
 		ArrayList<Computer> computerArray = new ArrayList<>();
 		
+		log.info("Start search for computer");
+		
+		PreparedStatement st;
+		ResultSet rs;
+		Connection cn;
 		try {
-			Connection cn = ComputerDatabase.getInstance();
+			cn = ComputerDatabase.getInstance();
 						
 			StringBuilder sb = new StringBuilder();
 			sb.append("select cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cpny.name from computer as cpt left outer join company as cpny on cpt.company_id=cpny.id where cpt.name like '%");
@@ -29,7 +39,7 @@ public class ComputerDAO {
 			
 			if(typeOrd!=null && !typeOrd.equals("") && ord!=null && !ord.equals(""))
 			{
-				sb.append(" group by ");
+				sb.append(" order by ");
 				
 				switch(typeOrd)
 				{
@@ -46,14 +56,17 @@ public class ComputerDAO {
 						sb.append("cpny.name");
 						break;
 				}
-				sb.append(" ");
+				sb.append(",cpt.name ");
 				sb.append(ord);
 			}
 			
-			PreparedStatement st = cn.prepareStatement(sb.toString());
-			//st.setString(1, search);
+			sb.append(" limit ");
+			sb.append((page-1)*15);
+			sb.append(",15");
 			
-			ResultSet rs = st.executeQuery();
+			st = cn.prepareStatement(sb.toString());
+						
+			rs = st.executeQuery();
 			
 			while(rs.next())
 			{
@@ -69,9 +82,41 @@ public class ComputerDAO {
 			e.printStackTrace();
 		}		
 		
+		log.info("End of search for computer");
 		return computerArray;
 	}
 	
+	public int nbComputer(String search)
+	{
+		int nbComputer = 0;
+				
+		try 
+		{
+			Connection cn = ComputerDatabase.getInstance();
+			
+			StringBuilder sb = new StringBuilder();
+			sb.append("select count(*) as nbComputer from computer as cpt left outer join company as cpny on cpt.company_id=cpny.id where cpt.name like '%");
+			sb.append(search);
+			sb.append("%' or cpny.name like '%");
+			sb.append(search);
+			sb.append("%'");
+			
+			PreparedStatement st = cn.prepareStatement(sb.toString());
+			
+			ResultSet rs = st.executeQuery();
+			
+			rs.next();
+			
+			nbComputer = rs.getInt(1);
+		}
+		catch(SQLException e)
+		{
+			
+		}
+		log.info("Return number of computer");
+		return nbComputer; 
+	}
+		
 	public Computer getComputer(int id)
 	{
 		Computer computer=null;
@@ -97,12 +142,13 @@ public class ComputerDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
-		
+		log.info("Getting the computer");
 		return computer;
 	}
 	
 	public void addComputer(String name, Date intro, Date disc, int company)
 	{
+		log.info("Start inserting a new computer");
 		try {
 			Connection cn = ComputerDatabase.getInstance();
 						
@@ -123,10 +169,12 @@ public class ComputerDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
+		log.info("Computer has been inserted successfully");
 	}
 	
 	public void updateComputer(int id, String name, Date intro, Date disc, int company_id)
 	{
+		log.info("Start updating computer");		
 		try {
 			Connection cn = ComputerDatabase.getInstance();
 						
@@ -156,10 +204,12 @@ public class ComputerDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		log.info("Computer has been updated successfully");
 	}
 	
 	public void deleteComputer(int id)
 	{
+		log.info("Start deleting computer");
 		try {
 			Connection cn = ComputerDatabase.getInstance();
 						
@@ -177,6 +227,7 @@ public class ComputerDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
+		log.info("Computer has been deleted successfully");
 	}
 
 }
