@@ -6,17 +6,15 @@ import java.sql.SQLException;
 
 public class ComputerDatabase {
 
+	private static ComputerDatabase computerDatabase;
 	private static Connection cn;
 	
-	private static void initComputerDatabase()
+	private ComputerDatabase()
 	{
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			
-			cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull"
-					,"thomas","thomas");
-			
-		} catch (ClassNotFoundException | SQLException e) {
+		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
@@ -25,9 +23,31 @@ public class ComputerDatabase {
 	
 	public static Connection getInstance()
 	{
-		if(cn==null)
-			initComputerDatabase();
+		if(computerDatabase==null)
+		{
+			computerDatabase = new ComputerDatabase();
+		}
+		
+		try {
+			cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull"
+					,"thomas","thomas");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return cn;
 	}
+	
+	public static void close()
+	{
+		try {
+			cn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	
 }

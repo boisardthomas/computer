@@ -37,7 +37,7 @@ public class CompanyDAO {
 			
 			st.close();
 			rs.close();
-			cn=null;			
+			cn.close();			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

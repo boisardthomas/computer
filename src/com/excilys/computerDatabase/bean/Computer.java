@@ -4,13 +4,18 @@ import java.util.Date;
 
 public class Computer {
 
-	private int id;
+	private Long id;
 	private String name;
 	private Date introducedDate;
 	private Date discontinuedDate;
 	private String Company;
+
+	public Computer()
+	{
+		
+	}
 	
-	public Computer(int id, String name, Date introducedDate,
+	public Computer(Long id, String name, Date introducedDate,
 			Date discontinuedDate, String company) {
 		super();
 		this.id = id;
@@ -19,12 +24,12 @@ public class Computer {
 		this.discontinuedDate = discontinuedDate;
 		Company = company;
 	}
-	
-	public int getId() {
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -59,7 +64,50 @@ public class Computer {
 	public void setCompany(String company) {
 		Company = company;
 	}
-	
-	
-	
+
+	public static class Builder {
+
+		Computer computer;
+
+		private Builder() {
+			computer = new Computer();
+		}
+
+		public Builder id(Long id) {
+			if(id != null)
+				this.computer.id = id;
+			return this;
+		}
+
+		public Builder name(String name) {
+			this.computer.name = name;
+			return this;
+		}
+
+		public Builder introduced(Date introduced) {
+			this.computer.introducedDate = introduced;
+			return this;
+		}
+
+		public Builder discontinued(Date discontinued) {
+			this.computer.discontinuedDate = discontinued;
+			return this;
+		}
+
+		public Builder company(String company) {
+			this.computer.Company = company;
+			return this;
+		}
+
+		public Computer build() {
+			return this.computer;
+		}
+
+	}
+
+	public static Builder builder() {
+		return new Builder();
+	}
+
+
 }
