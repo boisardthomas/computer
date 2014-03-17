@@ -17,6 +17,11 @@ import com.excilys.computerDatabase.dao.ComputerDAO;
 
 public class AddComputer extends HttpServlet{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -27,7 +32,6 @@ public class AddComputer extends HttpServlet{
 		req.getRequestDispatcher("/WEB-INF/addComputer.jsp").forward(req, resp);
 	}
 
-	@SuppressWarnings({ "deprecation", "deprecation" })
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {

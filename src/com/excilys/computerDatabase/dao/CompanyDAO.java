@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.excilys.computerDatabase.bean.Company;
-import com.excilys.computerDatabase.bean.Computer;
 import com.excilys.computerDatabase.jdbc.ComputerDatabase;
 import org.slf4j.*;
 

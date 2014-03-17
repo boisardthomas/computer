@@ -13,6 +13,11 @@ import com.excilys.computerDatabase.dao.ComputerDAO;
 
 public class ListComputer extends HttpServlet {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -21,13 +26,35 @@ public class ListComputer extends HttpServlet {
 		String search = req.getParameter("search");
 		String typeOrd = req.getParameter("typeOrd");
 		String ord = req.getParameter("ord");
-		int page = Integer.parseInt(req.getParameter("page"));		
+		int page;
+		
+		try
+		{
+			page= Integer.parseInt(req.getParameter("page"));		
+		}
+		catch(NumberFormatException nfe)
+		{
+			page=1;
+		}
 		
 		ComputerDAO cdao= new ComputerDAO();
-		ArrayList<Computer> computerArray = cdao.getListComputer(search,typeOrd,ord,page);
+		
+		ArrayList<Computer> computerArray;
+		int nbComputer;
+		
+		if(search!=null)
+		{
+			computerArray = cdao.getListComputer(search,typeOrd,ord,page);
+			nbComputer = cdao.nbComputer(search);
+		}
+		else
+		{
+			computerArray = cdao.getListComputer("",typeOrd,ord,page);
+			nbComputer = cdao.nbComputer("");
+		}
 		
 		req.setAttribute("computerList", computerArray);
-		req.setAttribute("nbOfComputer", cdao.nbComputer(search));
+		req.setAttribute("nbOfComputer", nbComputer);
 		
 		req.getRequestDispatcher("/WEB-INF/dashboard.jsp").forward(req, resp);
 	}
