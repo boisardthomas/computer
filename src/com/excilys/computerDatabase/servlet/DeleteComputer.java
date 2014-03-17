@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.excilys.computerDatabase.dao.ComputerDAO;
+import com.excilys.computerDatabase.service.ComputerService;
 
 /**
  * Servlet implementation class DeleteComputer
@@ -31,9 +31,9 @@ public class DeleteComputer extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		int id = Integer.parseInt(req.getParameter("id"));
 		
-		ComputerDAO cdao = new ComputerDAO();
+		ComputerService cs = ComputerService.getInstance();
 		
-		cdao.deleteComputer(id); 
+		cs.deleteComputer(id); 
 		
 		req.getRequestDispatcher("/WEB-INF/index.jsp").forward(req, resp);
 	}

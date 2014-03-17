@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.computerDatabase.bean.Company;
 import com.excilys.computerDatabase.bean.Computer;
-import com.excilys.computerDatabase.dao.CompanyDAO;
-import com.excilys.computerDatabase.dao.ComputerDAO;
+import com.excilys.computerDatabase.service.CompanyService;
+import com.excilys.computerDatabase.service.ComputerService;
 
 /**
  * Servlet implementation class UpdateComputer
@@ -38,11 +38,11 @@ public class UpdateComputer extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		int id = Integer.parseInt(req.getParameter("id"));
 				
-		CompanyDAO companyDAO = new CompanyDAO();
-		ComputerDAO computerDAO = new ComputerDAO();
-		ArrayList<Company> companyArray = companyDAO.getListCompany();
+		CompanyService companyService = CompanyService.getInstance();
+		ComputerService cs = ComputerService.getInstance();
+		ArrayList<Company> companyArray = companyService.getListCompany();
 		
-		Computer computer = computerDAO.getComputer(id);
+		Computer computer = cs.getComputer(id);
 		
 		req.setAttribute("companies", companyArray);
 		req.setAttribute("computer", computer);
@@ -53,7 +53,7 @@ public class UpdateComputer extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		ComputerDAO cdao = new ComputerDAO(); 
+		ComputerService cs = ComputerService.getInstance(); 
 		
 		int id = Integer.parseInt(req.getParameter("id"));
 		String name =req.getParameter("name");
@@ -91,7 +91,7 @@ public class UpdateComputer extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		cdao.updateComputer(id,name, intro, disc, id_comp);
+		cs.updateComputer(id,name, intro, disc, id_comp);
 		
 		req.getRequestDispatcher("/WEB-INF/index.jsp").forward(req, resp);		
 	}

@@ -1,36 +1,53 @@
 package com.excilys.computerDatabase.jdbc;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import com.jolbox.bonecp.BoneCP;
+import com.jolbox.bonecp.BoneCPConfig;
 
 public class ComputerDatabase {
 
 	private static ComputerDatabase computerDatabase;
-	private static Connection cn;
+	private static BoneCPConfig config = new BoneCPConfig();
+	private static BoneCP connectionPool;
 	
 	private ComputerDatabase()
 	{
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			
-		} catch (ClassNotFoundException e) {
+			config = new BoneCPConfig();
+			config.setJdbcUrl("jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull"); // jdbc url specific to your database, eg jdbc:mysql://127.0.0.1/yourdb
+			config.setUsername("thomas"); 
+			config.setPassword("thomas");
+			config.setMinConnectionsPerPartition(5);
+			config.setMaxConnectionsPerPartition(10);
+			config.setPartitionCount(1);
+			connectionPool = new BoneCP(config);
+		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
 		
 	}
 	
-	public static Connection getInstance()
+	public static ComputerDatabase getInstance()
 	{
 		if(computerDatabase==null)
 		{
 			computerDatabase = new ComputerDatabase();
 		}
 		
+		return computerDatabase;
+	}
+	
+	public Connection getConnection()
+	{
+		Connection cn =null;
+		
 		try {
-			cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull"
-					,"thomas","thomas");
+			cn = connectionPool.getConnection();
+			cn.setAutoCommit(false);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -41,12 +58,7 @@ public class ComputerDatabase {
 	
 	public static void close()
 	{
-		try {
-			cn.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		connectionPool.shutdown();
 	}
 	
 	

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.computerDatabase.bean.Computer;
-import com.excilys.computerDatabase.dao.ComputerDAO;
+import com.excilys.computerDatabase.service.ComputerService;
 
 public class ListComputer extends HttpServlet {
 
@@ -37,20 +37,20 @@ public class ListComputer extends HttpServlet {
 			page=1;
 		}
 		
-		ComputerDAO cdao= new ComputerDAO();
+		ComputerService cs= ComputerService.getInstance();
 		
 		ArrayList<Computer> computerArray;
 		int nbComputer;
 		
 		if(search!=null)
 		{
-			computerArray = cdao.getListComputer(search,typeOrd,ord,page);
-			nbComputer = cdao.nbComputer(search);
+			computerArray = cs.getList(search,typeOrd,ord,page);
+			nbComputer = cs.nbComputer(search);
 		}
 		else
 		{
-			computerArray = cdao.getListComputer("",typeOrd,ord,page);
-			nbComputer = cdao.nbComputer("");
+			computerArray = cs.getList("",typeOrd,ord,page);
+			nbComputer = cs.nbComputer("");
 		}
 		
 		req.setAttribute("computerList", computerArray);

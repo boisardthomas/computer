@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.computerDatabase.bean.Company;
-import com.excilys.computerDatabase.dao.CompanyDAO;
-import com.excilys.computerDatabase.dao.ComputerDAO;
+import com.excilys.computerDatabase.service.CompanyService;
+import com.excilys.computerDatabase.service.ComputerService;
 
 public class AddComputer extends HttpServlet{
 
@@ -25,8 +25,8 @@ public class AddComputer extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		CompanyDAO cdao = new CompanyDAO();
-		ArrayList<Company> companyArray = cdao.getListCompany();
+		CompanyService cs = CompanyService.getInstance();
+		ArrayList<Company> companyArray = cs.getListCompany();
 		
 		req.setAttribute("companies", companyArray);		
 		req.getRequestDispatcher("/WEB-INF/addComputer.jsp").forward(req, resp);
@@ -35,7 +35,7 @@ public class AddComputer extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		ComputerDAO cdao = new ComputerDAO(); 
+		ComputerService cs = ComputerService.getInstance(); 
 		
 		String name =req.getParameter("name");
 		Date intro = null;
@@ -70,7 +70,7 @@ public class AddComputer extends HttpServlet{
 			e.printStackTrace();
 		}
 		
-		cdao.addComputer(name, intro, disc, id_comp);
+		cs.addComputer(name, intro, disc, id_comp);
 		
 		req.getRequestDispatcher("/WEB-INF/index.jsp").forward(req, resp);
 	}

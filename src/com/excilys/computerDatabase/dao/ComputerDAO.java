@@ -16,9 +16,23 @@ import com.excilys.computerDatabase.jdbc.ComputerDatabase;
 
 public class ComputerDAO {
 
-	Logger log = LoggerFactory.getLogger(ComputerDAO.class);
+	private static Logger log = LoggerFactory.getLogger(ComputerDAO.class);
+	private static ComputerDAO cdao;
 	
-	public ArrayList<Computer> getListComputer(String search, String typeOrd, String ord, int page)
+	
+	private ComputerDAO()
+	{
+		
+	}
+	
+	public static ComputerDAO getInstance()
+	{
+		if(cdao == null)
+			cdao = new ComputerDAO();
+		return cdao	;	
+	}
+	
+	public ArrayList<Computer> getListComputer(Connection cndb,String search, String typeOrd, String ord, int page)
 	{
 		ArrayList<Computer> computerArray = new ArrayList<>();
 		
@@ -27,8 +41,9 @@ public class ComputerDAO {
 		PreparedStatement st=null;
 		ResultSet rs=null;
 		Connection cn=null;
+		
 		try {
-			cn = ComputerDatabase.getInstance();
+			cn = cndb;
 						
 			StringBuilder sb = new StringBuilder();
 			sb.append("select cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cpny.name from computer as cpt left outer join company as cpny on cpt.company_id=cpny.id where cpt.name like '%");
@@ -102,17 +117,17 @@ public class ComputerDAO {
 		return computerArray;
 	}
 	
-	public int nbComputer(String search)
+	public int nbComputer(Connection cndb,String search)
 	{
 		int nbComputer = 0;
 		
 		Connection cn=null;
 		PreparedStatement st=null;
 		ResultSet rs = null;
-		
+				
 		try 
 		{
-			cn = ComputerDatabase.getInstance();
+			cn = cndb;
 			
 			StringBuilder sb = new StringBuilder();
 			sb.append("select count(*) as nbComputer from computer as cpt left outer join company as cpny on cpt.company_id=cpny.id where cpt.name like '%");
@@ -131,14 +146,7 @@ public class ComputerDAO {
 		}
 		catch(SQLException e)
 		{
-			try {
-				st.close();
-				rs.close();
-				cn.close();
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}			
+			e.printStackTrace();
 		}
 		finally
 		{
@@ -157,16 +165,16 @@ public class ComputerDAO {
 		return nbComputer; 
 	}
 		
-	public Computer getComputer(int id)
+	public Computer getComputer(Connection cndb,int id)
 	{
 		Computer computer=null;
 		
 		Connection cn=null;
 		PreparedStatement st=null;
-		ResultSet rs = null;
-		
+		ResultSet rs = null;		
+				
 		try {
-			cn = ComputerDatabase.getInstance();
+			cn = cndb;
 						
 			String req = "select cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cpny.name from computer as cpt left outer join company as cpny on cpt.company_id=cpny.id where cpt.id=?;";
 			
@@ -201,15 +209,15 @@ public class ComputerDAO {
 		return computer;
 	}
 	
-	public void addComputer(String name, Date intro, Date disc, int company)
+	public void addComputer(Connection cndb,String name, Date intro, Date disc, int company)
 	{
 		log.info("Start inserting a new computer");
 		
 		Connection cn = null;
 		PreparedStatement st = null;
-		
+				
 		try {
-			cn = ComputerDatabase.getInstance();
+			cn = cndb;
 						
 			String req = "insert into computer values(default,?,?,?,?)";
 			
@@ -227,10 +235,17 @@ public class ComputerDAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			try {
+				cn.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}	
 		finally
 		{
 			try {
+				cn.commit();
 				st.close();
 				cn.close();
 			} catch (SQLException e) {
@@ -243,15 +258,15 @@ public class ComputerDAO {
 		log.info("Computer has been inserted successfully");
 	}
 	
-	public void updateComputer(int id, String name, Date intro, Date disc, int company_id)
+	public void updateComputer(Connection cndb,int id, String name, Date intro, Date disc, int company_id)
 	{
 		log.info("Start updating computer");
 
 		Connection cn = null;
 		PreparedStatement st = null;	
-		
+				
 		try {
-			cn = ComputerDatabase.getInstance();
+			cn = cndb;
 						
 			String req = "update computer set name=?, introduced=?, discontinued=?, company_id=? where id =?;";
 			
@@ -273,10 +288,16 @@ public class ComputerDAO {
 			
 			st.executeUpdate();
 			
-						
+			cn.commit();			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			try {
+				cn.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -293,7 +314,7 @@ public class ComputerDAO {
 		log.info("Computer has been updated successfully");
 	}
 	
-	public void deleteComputer(int id)
+	public void deleteComputer(Connection cndb,int id)
 	{
 		log.info("Start deleting computer");
 		
@@ -301,7 +322,7 @@ public class ComputerDAO {
 		PreparedStatement st = null;
 		
 		try {
-			cn = ComputerDatabase.getInstance();
+			cn = cndb;
 						
 			String req = "delete from computer where id=?;";
 			
@@ -311,9 +332,16 @@ public class ComputerDAO {
 			
 			st.executeUpdate();
 				
+			cn.commit();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			try {
+				cn.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}		
 		finally
 		{

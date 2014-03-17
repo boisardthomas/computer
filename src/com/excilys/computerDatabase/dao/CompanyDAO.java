@@ -7,27 +7,45 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.excilys.computerDatabase.bean.Company;
-import com.excilys.computerDatabase.jdbc.ComputerDatabase;
 import org.slf4j.*;
 
 public class CompanyDAO {
 
-	Logger log = LoggerFactory.getLogger(CompanyDAO.class);
+	private static Logger log = LoggerFactory.getLogger(CompanyDAO.class);
 	
-	public ArrayList<Company> getListCompany()
+	private static CompanyDAO cdao;
+	
+	private CompanyDAO()
+	{
+		
+	}
+	
+	public static CompanyDAO getInstance()
+	{
+		if(cdao == null)
+			cdao = new CompanyDAO();
+		return cdao;
+	}
+	
+	public ArrayList<Company> getListCompany(Connection cndb)
 	{
 		log.info("start search for company");
 		
 		ArrayList<Company> companyArray = new ArrayList<>();
 		
+		Connection cn = null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		
 		try {
-			Connection cn = ComputerDatabase.getInstance();
+			cn = cndb;
 						
 			String req = "select * from company;";
 			
-			PreparedStatement st = cn.prepareStatement(req);
+			st = cn.prepareStatement(req);
 			
-			ResultSet rs = st.executeQuery();
+			rs = st.executeQuery();
 			
 			while(rs.next())
 			{
@@ -35,14 +53,25 @@ public class CompanyDAO {
 				companyArray.add(c);
 			}
 			
-			st.close();
-			rs.close();
-			cn.close();			
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}		
-		
+		}	
+		finally
+		{
+			
+			try {
+				st.close();
+				rs.close();
+				cn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+						
+		}
+				
 		log.info("end of search for company");
 		
 		return companyArray;
