@@ -53,7 +53,7 @@ public class CompanyDAO {
 				companyArray.add(c);
 			}
 			
-			
+			cn.commit();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

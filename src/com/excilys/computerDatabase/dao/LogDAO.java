@@ -23,21 +23,23 @@ public class LogDAO {
 		return ldao;
 	}
 	
-	public void addLog(Connection cndb, String operation)
+	public void addLog(Connection cndb, String operation, String type)
 	{
 		Connection cn = null;
 		PreparedStatement st  = null;
 		try
 		{
 			cn = cndb;
-			st = cn.prepareStatement("insert into log (default,?,?)");
+			st = cn.prepareStatement("insert into log values (default,?,NOW(),?)");
 			st.setString(1, operation);
-			st.setDate(2, new java.sql.Date(new java.util.Date().getTime()));
+			st.setString(2, type);
 			st.executeUpdate();
 		}
 		catch(SQLException e)
 		{
+			e.printStackTrace();
 			try {
+				
 				cn.rollback();
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
@@ -48,7 +50,6 @@ public class LogDAO {
 		{
 			try {
 				st.close();
-				cn.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -95,6 +95,7 @@ public class ComputerDAO {
 				computerArray.add(c);
 			}
 			
+			cn.commit();
 				
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -143,6 +144,8 @@ public class ComputerDAO {
 			rs.next();
 			
 			nbComputer = rs.getInt(1);
+			
+			cn.commit();
 		}
 		catch(SQLException e)
 		{
@@ -187,7 +190,7 @@ public class ComputerDAO {
 				computer= new Computer (rs.getLong(1),rs.getString(2),rs.getDate(3),rs.getDate(4),rs.getString(5));
 			}
 			
-					
+			cn.commit();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -230,8 +233,7 @@ public class ComputerDAO {
 			
 			st.executeUpdate();
 			
-			st.close();
-						
+			cn.commit();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -245,7 +247,7 @@ public class ComputerDAO {
 		finally
 		{
 			try {
-				cn.commit();
+				
 				st.close();
 				cn.close();
 			} catch (SQLException e) {

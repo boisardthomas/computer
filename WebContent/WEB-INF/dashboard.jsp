@@ -7,18 +7,20 @@
 <c:set var="nbComputer" value="${nbOfComputer}" />
 <c:set var="nbOfPageF" value="${nbComputer/15.0}" />
 <fmt:parseNumber var="nbOfPage" integerOnly="true" value="${nbOfPageF+(1-(nbOfPageF%1))%1}" /><%-- ${N+(1-(N%1))%1} --%>
-
+	
 	<h1 id="homeTitle"><c:out value="${nbComputer}"></c:out> Computers found</h1>
 	<div id="actions">
 		<form action="ListComputer" method="GET">
-			<input type="search" id="searchbox" name="search"
+			<div class="col-lg-2">
+			<input class="form-control" type="search" id="searchbox" name="search"
 				value="${param.search}" placeholder="Search name">
+			</div>
 			<input type="hidden" name="page" value="1">
 			<input type="submit" id="searchsubmit"
 				value="Filter by name"
-				class="btn primary">
+				class="btn btn-primary">
 		</form>
-		<a class="btn success" id="add" href="addComputer">Add Computer</a>
+		<a class="btn btn-success" id="add" href="addComputer">Add Computer</a>
 	</div>
 
 		<table>
@@ -41,7 +43,7 @@
 			</tr>
 		</table>
 		
-		<table class="computers zebra-striped">
+		<table class="computers table table-striped table-hover table-bordered">
 			<thead>
 				<tr>
 					<!-- Variable declarations for passing labels as parameters -->
@@ -68,8 +70,8 @@
 						<td><c:out value="${comp.discontinuedDate}"></c:out></td>
 						<td><c:out value="${comp.company}"></c:out></td>
 						<td>
-							<a class="btn success" id="add" href="updateComputer?id=<c:out value="${comp.id}"></c:out>">Update</a>
-							<a class="btn error" id="add" href="deleteComputer?id=<c:out value="${comp.id}"></c:out>" onclick="return confirm('Are you sure?')">Delete</a>
+							<a class="btn btn-success" id="add" href="updateComputer?id=<c:out value="${comp.id}"></c:out>">Update</a>
+							<a class="btn btn-danger" id="add" href="deleteComputer?id=<c:out value="${comp.id}"></c:out>" onclick="return confirm('Are you sure?')">Delete</a>
 						</td>
 					</tr>
 				</c:forEach>
