@@ -12,334 +12,228 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.excilys.computerDatabase.bean.Computer;
+import com.excilys.computerDatabase.jdbc.ComputerDatabase;
 
 public class ComputerDAO {
 
 	private static Logger log = LoggerFactory.getLogger(ComputerDAO.class);
 	private static ComputerDAO cdao;
-	
-	
-	private ComputerDAO()
-	{
-		
+
+	private ComputerDAO() {
+
 	}
-	
-	public static ComputerDAO getInstance()
-	{
-		if(cdao == null)
+
+	public static ComputerDAO getInstance() {
+		if (cdao == null)
 			cdao = new ComputerDAO();
-		return cdao	;	
+		return cdao;
 	}
-	
-	public ArrayList<Computer> getListComputer(Connection cndb,String search, String typeOrd, String ord, int page)
-	{
+
+	public ArrayList<Computer> getListComputer(String search,
+			String typeOrd, String ord, int page) throws SQLException {
 		ArrayList<Computer> computerArray = new ArrayList<>();
-		
+
 		log.info("Start search for computer");
-		
-		PreparedStatement st=null;
-		ResultSet rs=null;
-		Connection cn=null;
-		
-		try {
-			cn = cndb;
-						
-			StringBuilder sb = new StringBuilder();
-			sb.append("select cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cpny.name from computer as cpt left outer join company as cpny on cpt.company_id=cpny.id where cpt.name like '%");
-			sb.append(search);
-			sb.append("%' or cpny.name like '%");
-			sb.append(search);
-			sb.append("%'");
-			
-			if(typeOrd!=null && !typeOrd.equals("") && ord!=null && !ord.equals(""))
-			{
-				sb.append(" order by ");
-				
-				switch(typeOrd)
-				{
-					case "comp_name":
-						sb.append("cpt.name");
-						break;
-					case "comp_intro":
-						sb.append("cpt.introduced");
-						break;
-					case "comp_disc":
-						sb.append("cpt.discontinued");
-						break;
-					case "cpny_name":
-						sb.append("cpny.name");
-						break;
-				}
-				sb.append(",cpt.name ");
-				sb.append(ord);
+
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		Connection cn = null;
+
+		cn = ComputerDatabase.getInstance().getConnection();
+
+		StringBuilder sb = new StringBuilder();
+		sb.append("select cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cpny.name from computer as cpt left outer join company as cpny on cpt.company_id=cpny.id where cpt.name like '%");
+		sb.append(search);
+		sb.append("%' or cpny.name like '%");
+		sb.append(search);
+		sb.append("%'");
+
+		if (typeOrd != null && !typeOrd.equals("") && ord != null
+				&& !ord.equals("")) {
+			sb.append(" order by ");
+
+			switch (typeOrd) {
+			case "comp_name":
+				sb.append("cpt.name");
+				break;
+			case "comp_intro":
+				sb.append("cpt.introduced");
+				break;
+			case "comp_disc":
+				sb.append("cpt.discontinued");
+				break;
+			case "cpny_name":
+				sb.append("cpny.name");
 			}
-			
-			sb.append(" limit ");
-			sb.append((page-1)*15);
-			sb.append(",15");
-			
-			st = cn.prepareStatement(sb.toString());
-						
-			rs = st.executeQuery();
-			
-			while(rs.next())
-			{
-				//new Computer (rs.getLong(1),rs.getString(2),rs.getDate(3),rs.getDate(4),rs.getString(5));
-				Computer c = Computer.builder().id(rs.getLong(1))
-									.name(rs.getString(2))
-									.introduced(rs.getDate(3))
-									.discontinued(rs.getDate(4))
-									.company(rs.getString(5))
-									.build();
-				computerArray.add(c);
-			}
-							
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}		
-		finally
-		{
-			try {
-				rs.close();
-				st.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}					
+			sb.append(",cpt.name ");
+			sb.append(ord);
 		}
-		
+
+		sb.append(" limit ");
+		sb.append((page - 1) * 15);
+		sb.append(",15");
+
+		st = cn.prepareStatement(sb.toString());
+
+		rs = st.executeQuery();
+
+		while (rs.next()) {
+			// new Computer
+			// (rs.getLong(1),rs.getString(2),rs.getDate(3),rs.getDate(4),rs.getString(5));
+			Computer c = Computer.builder().id(rs.getLong(1))
+					.name(rs.getString(2)).introduced(rs.getDate(3))
+					.discontinued(rs.getDate(4)).company(rs.getString(5))
+					.build();
+			computerArray.add(c);
+		}
+
+		rs.close();
+		st.close();
+
 		log.info("End of search for computer");
 		return computerArray;
 	}
-	
-	public int nbComputer(Connection cndb,String search)
-	{
+
+	public int nbComputer(String search) throws SQLException {
 		int nbComputer = 0;
-		
-		Connection cn=null;
-		PreparedStatement st=null;
+
+		Connection cn = null;
+		PreparedStatement st = null;
 		ResultSet rs = null;
-				
-		try 
-		{
-			cn = cndb;
-			
-			StringBuilder sb = new StringBuilder();
-			sb.append("select count(*) as nbComputer from computer as cpt left outer join company as cpny on cpt.company_id=cpny.id where cpt.name like '%");
-			sb.append(search);
-			sb.append("%' or cpny.name like '%");
-			sb.append(search);
-			sb.append("%'");
-			
-			st = cn.prepareStatement(sb.toString());
-			
-			rs = st.executeQuery();
-			
-			rs.next();
-			
-			nbComputer = rs.getInt(1);
-			
-		}
-		catch(SQLException e)
-		{
-			e.printStackTrace();
-		}
-		finally
-		{
-			try {
-				st.close();
-				rs.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-					
-		}
-		
+
+		cn = ComputerDatabase.getInstance().getConnection();
+
+		StringBuilder sb = new StringBuilder();
+		sb.append("select count(*) as nbComputer from computer as cpt left outer join company as cpny on cpt.company_id=cpny.id where cpt.name like '%");
+		sb.append(search);
+		sb.append("%' or cpny.name like '%");
+		sb.append(search);
+		sb.append("%'");
+
+		st = cn.prepareStatement(sb.toString());
+
+		rs = st.executeQuery();
+
+		rs.next();
+
+		nbComputer = rs.getInt(1);
+
+		st.close();
+		rs.close();
+
 		log.info("Return number of computer");
-		return nbComputer; 
+		return nbComputer;
 	}
-		
-	public Computer getComputer(Connection cndb,int id)
-	{
-		Computer computer=null;
-		
-		Connection cn=null;
-		PreparedStatement st=null;
-		ResultSet rs = null;		
-				
-		try {
-			cn = cndb;
-						
-			String req = "select cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cpny.name from computer as cpt left outer join company as cpny on cpt.company_id=cpny.id where cpt.id=?;";
-			
-			st = cn.prepareStatement(req);
-			st.setInt(1, id);			
-			rs = st.executeQuery();
-			
-			while(rs.next())
-			{
-				computer= new Computer (rs.getLong(1),rs.getString(2),rs.getDate(3),rs.getDate(4),rs.getString(5));
-			}
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
-		finally
-		{
-			try {
-				st.close();
-				rs.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-					
+
+	public Computer getComputer(int id) throws SQLException {
+		Computer computer = null;
+
+		Connection cn = null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		cn = ComputerDatabase.getInstance().getConnection();
+
+		String req = "select cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cpny.name from computer as cpt left outer join company as cpny on cpt.company_id=cpny.id where cpt.id=?;";
+
+		st = cn.prepareStatement(req);
+		st.setInt(1, id);
+		rs = st.executeQuery();
+
+		while (rs.next()) {
+			computer = new Computer(rs.getLong(1), rs.getString(2),
+					rs.getDate(3), rs.getDate(4), rs.getString(5));
 		}
-		
+
+		st.close();
+		rs.close();
+
 		log.info("Getting the computer");
 		return computer;
 	}
-	
-	public void addComputer(Connection cndb,String name, Date intro, Date disc, int company)
-	{
+
+	public Long addComputer(String name, Date intro,
+			Date disc, int company) throws SQLException {
 		log.info("Start inserting a new computer");
-		
+
 		Connection cn = null;
 		PreparedStatement st = null;
-				
-		try {
-			cn = cndb;
-						
-			String req = "insert into computer values(default,?,?,?,?)";
-			
-			st = cn.prepareStatement(req);
-			
-			st.setString(1, name);
-			st.setDate(2, new java.sql.Date(intro.getTime()));
-			st.setDate(3, new java.sql.Date(disc.getTime()));
-			st.setInt(4, company);
-			
-			st.executeUpdate();
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			try {
-				cn.rollback();
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}	
-		finally
-		{
-			try {
-				st.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-					
-		}
+
+		cn = ComputerDatabase.getInstance().getConnection();
+
+		String req = "insert into computer values(default,?,?,?,?)";
+
+		st = cn.prepareStatement(req);
+
+		st.setString(1, name);
+		st.setDate(2, new java.sql.Date(intro.getTime()));
+		st.setDate(3, new java.sql.Date(disc.getTime()));
+		st.setInt(4, company);
+
+		st.executeUpdate();
+
+		ResultSet rs = st.getGeneratedKeys();
 		
+		Long key = new Long(0);
+		
+		if(rs.first())
+			key = rs.getLong(1); 
+		st.close();
+
 		log.info("Computer has been inserted successfully");
+		
+		return key;
 	}
-	
-	public void updateComputer(Connection cndb,int id, String name, Date intro, Date disc, int company_id)
-	{
+
+	public void updateComputer(int id, String name,
+			Date intro, Date disc, int company_id) throws SQLException {
 		log.info("Start updating computer");
 
 		Connection cn = null;
-		PreparedStatement st = null;	
-				
-		try {
-			cn = cndb;
-						
-			String req = "update computer set name=?, introduced=?, discontinued=?, company_id=? where id =?;";
-			
-			st = cn.prepareStatement(req);
-			
-			st.setString(1, name);			
-			st.setDate(2, new java.sql.Date(intro.getTime()));
-			st.setDate(3, new java.sql.Date(disc.getTime()));
-			
-			if(company_id>0)
-			{
-				st.setInt(4, company_id);
-			}
-			else
-			{
-				st.setNull(4,Types.INTEGER);
-			}
-			st.setInt(5, id);
-			
-			st.executeUpdate();
-				
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			try {
-				cn.rollback();
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+		PreparedStatement st = null;
+
+		cn = ComputerDatabase.getInstance().getConnection();
+
+		String req = "update computer set name=?, introduced=?, discontinued=?, company_id=? where id =?;";
+
+		st = cn.prepareStatement(req);
+
+		st.setString(1, name);
+		st.setDate(2, new java.sql.Date(intro.getTime()));
+		st.setDate(3, new java.sql.Date(disc.getTime()));
+
+		if (company_id > 0) {
+			st.setInt(4, company_id);
+		} else {
+			st.setNull(4, Types.INTEGER);
 		}
-		finally
-		{
-			try {
-				st.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-					
-		}
-		
+		st.setInt(5, id);
+
+		st.executeUpdate();
+
+		st.close();
+
 		log.info("Computer has been updated successfully");
 	}
-	
-	public void deleteComputer(Connection cndb,int id)
-	{
+
+	public void deleteComputer(int id) throws SQLException {
 		log.info("Start deleting computer");
-		
+
 		Connection cn = null;
 		PreparedStatement st = null;
-		
-		try {
-			cn = cndb;
-						
-			String req = "delete from computer where id=?;";
-			
-			st = cn.prepareStatement(req);
-			
-			st.setInt(1, id);			
-			
-			st.executeUpdate();
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			try {
-				cn.rollback();
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}		
-		finally
-		{
-			try {
-				st.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}					
-		}
-		
+
+		cn = ComputerDatabase.getInstance().getConnection();
+
+		String req = "delete from computer where id=?;";
+
+		st = cn.prepareStatement(req);
+
+		st.setInt(1, id);
+
+		st.executeUpdate();
+
+		st.close();
+
 		log.info("Computer has been deleted successfully");
 	}
 

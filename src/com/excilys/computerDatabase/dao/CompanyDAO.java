@@ -27,7 +27,7 @@ public class CompanyDAO {
 		return cdao;
 	}
 	
-	public ArrayList<Company> getListCompany(Connection cndb)
+	public ArrayList<Company> getListCompany(Connection cndb) throws SQLException
 	{
 		log.info("start search for company");
 		
@@ -37,38 +37,23 @@ public class CompanyDAO {
 		PreparedStatement st = null;
 		ResultSet rs = null;		
 		
-		try {
-			cn = cndb;
-						
-			String req = "select * from company;";
+		cn = cndb;
+					
+		String req = "select * from company;";
 			
-			st = cn.prepareStatement(req);
+		st = cn.prepareStatement(req);
 			
-			rs = st.executeQuery();
+		rs = st.executeQuery();
 			
-			while(rs.next())
-			{
-				Company c = new Company (rs.getInt(1),rs.getString(2));
-				companyArray.add(c);
-			}
-			
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
-		finally
+		while(rs.next())
 		{
-			
-			try {
-				st.close();
-				rs.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-						
+			Company c = Company.builder().id(rs.getLong(1)).name(rs.getString(2)).build();
+			companyArray.add(c);
 		}
+		
+		st.close();
+		rs.close();
+		
 				
 		log.info("end of search for company");
 		

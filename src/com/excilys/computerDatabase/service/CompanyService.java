@@ -15,14 +15,13 @@ public class CompanyService {
 	private static CompanyService cs;
 	private static LogDAO ldao;
 	private static ComputerDatabase cd;
-	private ThreadLocal<Connection> threadConnection;
+	
 	
 	private CompanyService()
 	{
 		cdao = CompanyDAO.getInstance();
 		cd = ComputerDatabase.getInstance();
 		ldao = LogDAO.getInstance();
-		threadConnection = new ThreadLocal<Connection>();
 	}
 	
 	public static CompanyService getInstance()
@@ -34,17 +33,25 @@ public class CompanyService {
 	
 	public ArrayList<Company> getListCompany()
 	{
-		//threadConnection.set(cd.getConnection());
 		Connection cn = cd.getConnection();
-		ldao.addLog(cn, "list all company", "select");
-		ArrayList<Company> companies = cdao.getListCompany(cn);
+		
+		ArrayList<Company> companies= new ArrayList<>();
 		
 		try {
+			ldao.addLog(cn, "list all company", "select");
+			companies.addAll(cdao.getListCompany(cn));
 			cn.commit();
 			cn.close();
+			cd.closeConnection();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			try {
+				cn.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 		
 		return companies;

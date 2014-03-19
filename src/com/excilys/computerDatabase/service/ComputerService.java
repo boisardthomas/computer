@@ -34,15 +34,24 @@ public class ComputerService {
 	public ArrayList<Computer> getList(String search, String typeOrd, String ord, int page)
 	{
 		Connection cn = cd.getConnection();
-		ldao.addLog(cn, "list all computer where name or company name like : "+ search, "select");
-		ArrayList<Computer> computers = computerDAO.getListComputer(cn,search, typeOrd, ord, page);
+		
+		ArrayList<Computer> computers = new ArrayList<>();
 		
 		try {
+			computers.addAll(computerDAO.getListComputer(search, typeOrd, ord, page));
+			ldao.addLog(cn, "list all computer where name or company name like : "+ search, "select");
 			cn.commit();
 			cn.close();
+			cd.closeConnection();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			try {
+				cn.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 		
 		return computers;
@@ -51,15 +60,24 @@ public class ComputerService {
 	public int nbComputer(String search)
 	{
 		Connection cn = cd.getConnection();
-		ldao.addLog(cn, "get number of computer where name or company name like : "+ search, "select");
-		int nbComputer = computerDAO.nbComputer(cn,search);
+		
+		int nbComputer =0;
 		
 		try {
+			nbComputer = computerDAO.nbComputer(search);
+			ldao.addLog(cn, "get number of computer where name or company name like : "+ search, "select");
 			cn.commit();
 			cn.close();
+			cd.closeConnection();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			try {
+				cn.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 		
 		return nbComputer;
@@ -68,15 +86,24 @@ public class ComputerService {
 	public Computer getComputer(int id)
 	{
 		Connection cn = cd.getConnection();
-		ldao.addLog(cn, "get computer where id="+id, "select");
-		Computer computer = computerDAO.getComputer(cn,id);
+		
+		Computer computer = null;
 		
 		try {
+			computer = computerDAO.getComputer(id);
+			ldao.addLog(cn, "get computer where id="+id, "select");
 			cn.commit();
 			cn.close();
+			cd.closeConnection();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			try {
+				cn.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 		
 		return computer;
@@ -85,15 +112,22 @@ public class ComputerService {
 	public void addComputer(String name, Date intro, Date disc, int company)
 	{
 		Connection cn = cd.getConnection();
-		ldao.addLog(cn, "add computer", "insert");
-		computerDAO.addComputer(cn,name, intro, disc, company);
-		
+				
 		try {
+			Long key =computerDAO.addComputer(name, intro, disc, company);
+			ldao.addLog(cn, "add computer where id =" + key , "insert");
 			cn.commit();
 			cn.close();
+			cd.closeConnection();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			try {
+				cn.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}	
 		
 	}
@@ -101,15 +135,22 @@ public class ComputerService {
 	public void updateComputer(int id, String name, Date intro, Date disc, int company_id)
 	{
 		Connection cn = cd.getConnection();
-		ldao.addLog(cn, "update computer where id="+id, "update");
-		computerDAO.updateComputer(cn,id, name, intro, disc, company_id);
-		
+	
 		try {
+			ldao.addLog(cn, "update computer where id="+id, "update");
+			computerDAO.updateComputer(id, name, intro, disc, company_id);
 			cn.commit();
 			cn.close();
+			cd.closeConnection();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			try {
+				cn.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	
 	}
@@ -117,15 +158,22 @@ public class ComputerService {
 	public void deleteComputer(int id)
 	{
 		Connection cn = cd.getConnection();
-		ldao.addLog(cn, "Delete computer  where id="+id, "delete");
-		computerDAO.deleteComputer(cn,id);
-		
+				
 		try {
+			ldao.addLog(cn, "Delete computer  where id="+id, "delete");
+			computerDAO.deleteComputer(id);
 			cn.commit();
 			cn.close();
+			cd.closeConnection();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			try {
+				cn.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 		
 	}

@@ -23,37 +23,19 @@ public class LogDAO {
 		return ldao;
 	}
 	
-	public void addLog(Connection cndb, String operation, String type)
+	public void addLog(Connection cndb, String operation, String type) throws SQLException
 	{
 		Connection cn = null;
 		PreparedStatement st  = null;
-		try
-		{
-			cn = cndb;
-			st = cn.prepareStatement("insert into log values (default,?,NOW(),?)");
-			st.setString(1, operation);
-			st.setString(2, type);
-			st.executeUpdate();
-		}
-		catch(SQLException e)
-		{
-			e.printStackTrace();
-			try {
-				
-				cn.rollback();
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}
-		finally
-		{
-			try {
-				st.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		
+		cn = cndb;
+		st = cn.prepareStatement("insert into log values (default,?,NOW(),?)");
+		st.setString(1, operation);
+		st.setString(2, type);
+		st.executeUpdate();
+		
+		
+		st.close();
+		
 	}
 }

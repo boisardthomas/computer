@@ -11,6 +11,7 @@ public class ComputerDatabase {
 	private static ComputerDatabase computerDatabase;
 	private static BoneCPConfig config = new BoneCPConfig();
 	private static BoneCP connectionPool;
+	private static ThreadLocal<Connection> threadConnection;
 	
 	private ComputerDatabase()
 	{
@@ -24,6 +25,7 @@ public class ComputerDatabase {
 			config.setMaxConnectionsPerPartition(10);
 			config.setPartitionCount(1);
 			connectionPool = new BoneCP(config);
+			threadConnection = new ThreadLocal<Connection>();
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -44,9 +46,13 @@ public class ComputerDatabase {
 	public Connection getConnection()
 	{
 		Connection cn =null;
-		
+				
 		try {
-			cn = connectionPool.getConnection();
+			if(threadConnection.get()==null)
+			{
+				threadConnection.set(connectionPool.getConnection());
+			}
+			cn = threadConnection.get();
 			cn.setAutoCommit(false);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -54,6 +60,11 @@ public class ComputerDatabase {
 		}
 		
 		return cn;
+	}
+	
+	public void closeConnection()
+	{
+		threadConnection.set(null);
 	}
 	
 	public static void close()
