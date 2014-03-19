@@ -35,8 +35,7 @@ public class CompanyDAO {
 		
 		Connection cn = null;
 		PreparedStatement st = null;
-		ResultSet rs = null;
-		
+		ResultSet rs = null;		
 		
 		try {
 			cn = cndb;
@@ -53,7 +52,7 @@ public class CompanyDAO {
 				companyArray.add(c);
 			}
 			
-			cn.commit();
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -64,7 +63,6 @@ public class CompanyDAO {
 			try {
 				st.close();
 				rs.close();
-				cn.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

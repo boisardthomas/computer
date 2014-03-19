@@ -43,7 +43,7 @@
 			</tr>
 		</table>
 		
-		<table class="computers table table-striped table-hover table-bordered">
+		<table class="computers table table-striped table-bordered">
 			<thead>
 				<tr>
 					<!-- Variable declarations for passing labels as parameters -->

@@ -1,6 +1,7 @@
 package com.excilys.computerDatabase.service;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.excilys.computerDatabase.bean.Company;
@@ -14,12 +15,14 @@ public class CompanyService {
 	private static CompanyService cs;
 	private static LogDAO ldao;
 	private static ComputerDatabase cd;
+	private ThreadLocal<Connection> threadConnection;
 	
 	private CompanyService()
 	{
 		cdao = CompanyDAO.getInstance();
 		cd = ComputerDatabase.getInstance();
 		ldao = LogDAO.getInstance();
+		threadConnection = new ThreadLocal<Connection>();
 	}
 	
 	public static CompanyService getInstance()
@@ -31,9 +34,20 @@ public class CompanyService {
 	
 	public ArrayList<Company> getListCompany()
 	{
+		//threadConnection.set(cd.getConnection());
 		Connection cn = cd.getConnection();
 		ldao.addLog(cn, "list all company", "select");
-		return cdao.getListCompany(cn);
+		ArrayList<Company> companies = cdao.getListCompany(cn);
+		
+		try {
+			cn.commit();
+			cn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return companies;
 	}	
 	
 }

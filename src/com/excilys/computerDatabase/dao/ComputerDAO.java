@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.excilys.computerDatabase.bean.Computer;
-import com.excilys.computerDatabase.jdbc.ComputerDatabase;
 
 public class ComputerDAO {
 
@@ -94,9 +93,7 @@ public class ComputerDAO {
 									.build();
 				computerArray.add(c);
 			}
-			
-			cn.commit();
-				
+							
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -104,14 +101,12 @@ public class ComputerDAO {
 		finally
 		{
 			try {
-				st.close();
 				rs.close();
-				cn.close();
+				st.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-					
+			}					
 		}
 		
 		log.info("End of search for computer");
@@ -145,7 +140,6 @@ public class ComputerDAO {
 			
 			nbComputer = rs.getInt(1);
 			
-			cn.commit();
 		}
 		catch(SQLException e)
 		{
@@ -156,7 +150,6 @@ public class ComputerDAO {
 			try {
 				st.close();
 				rs.close();
-				cn.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -190,7 +183,6 @@ public class ComputerDAO {
 				computer= new Computer (rs.getLong(1),rs.getString(2),rs.getDate(3),rs.getDate(4),rs.getString(5));
 			}
 			
-			cn.commit();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -200,7 +192,6 @@ public class ComputerDAO {
 			try {
 				st.close();
 				rs.close();
-				cn.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -233,7 +224,6 @@ public class ComputerDAO {
 			
 			st.executeUpdate();
 			
-			cn.commit();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -247,9 +237,7 @@ public class ComputerDAO {
 		finally
 		{
 			try {
-				
 				st.close();
-				cn.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -289,8 +277,7 @@ public class ComputerDAO {
 			st.setInt(5, id);
 			
 			st.executeUpdate();
-			
-			cn.commit();			
+				
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -305,7 +292,6 @@ public class ComputerDAO {
 		{
 			try {
 				st.close();
-				cn.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -333,8 +319,7 @@ public class ComputerDAO {
 			st.setInt(1, id);			
 			
 			st.executeUpdate();
-				
-			cn.commit();
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -349,12 +334,10 @@ public class ComputerDAO {
 		{
 			try {
 				st.close();
-				cn.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-					
+			}					
 		}
 		
 		log.info("Computer has been deleted successfully");
