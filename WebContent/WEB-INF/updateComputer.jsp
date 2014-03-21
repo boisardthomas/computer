@@ -45,7 +45,7 @@
 		<div class="form-group">
     		<div class="col-sm-offset-2 col-sm-6">
     			<input type="submit" value="Modify" class="btn btn-primary">
-				or <a href="ListComputer?page=${param.page}&search=${param.search}&typeOrd=${param.typeOrd}&ord=${param.ord}" class="btn btn-primary">Cancel</a>
+				or <a href="ListComputer?page=1" class="btn btn-primary">Cancel</a>
 			</div>
 		</div>
 	</form>

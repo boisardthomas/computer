@@ -29,13 +29,21 @@ public class DeleteComputer extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		int id = Integer.parseInt(req.getParameter("id"));
 		
-		ComputerService cs = ComputerService.getInstance();
-		
-		cs.deleteComputer(id); 
-		
-		req.getRequestDispatcher("/WEB-INF/index.jsp").forward(req, resp);
+		try
+		{
+			int id = Integer.parseInt(req.getParameter("id"));
+			
+			ComputerService cs = ComputerService.getInstance();
+			
+			cs.deleteComputer(id); 
+			
+			req.getRequestDispatcher("/WEB-INF/index.jsp").forward(req, resp);
+		}
+		catch(Exception e)
+		{
+			resp.sendRedirect("/WEB-INF/index.jsp");
+		}
 	}
 
 }

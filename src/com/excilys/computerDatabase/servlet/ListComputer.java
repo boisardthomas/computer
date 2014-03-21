@@ -26,37 +26,39 @@ public class ListComputer extends HttpServlet {
 		String search = req.getParameter("search");
 		String typeOrd = req.getParameter("typeOrd");
 		String ord = req.getParameter("ord");
-		int page;
+		int page=1;
 		
 		try
 		{
-			page= Integer.parseInt(req.getParameter("page"));		
+			page= Integer.parseInt(req.getParameter("page"));
+			
+			ComputerService cs= ComputerService.getInstance();
+			
+			ArrayList<Computer> computerArray;
+			int nbComputer;
+			
+			if(search!=null)
+			{
+				computerArray = cs.getList(search,typeOrd,ord,page);
+				nbComputer = cs.nbComputer(search);
+			}
+			else
+			{
+				computerArray = cs.getList("",typeOrd,ord,page);
+				nbComputer = cs.nbComputer("");
+			}
+			
+			req.setAttribute("computerList", computerArray);
+			req.setAttribute("nbOfComputer", nbComputer);
+			
+			req.getRequestDispatcher("/WEB-INF/dashboard.jsp").forward(req, resp);
 		}
 		catch(NumberFormatException nfe)
 		{
-			page=1;
+			resp.sendError(404,"Vous venez d'être attrapé par la brigade des coincoins !!!");
 		}
 		
-		ComputerService cs= ComputerService.getInstance();
 		
-		ArrayList<Computer> computerArray;
-		int nbComputer;
-		
-		if(search!=null)
-		{
-			computerArray = cs.getList(search,typeOrd,ord,page);
-			nbComputer = cs.nbComputer(search);
-		}
-		else
-		{
-			computerArray = cs.getList("",typeOrd,ord,page);
-			nbComputer = cs.nbComputer("");
-		}
-		
-		req.setAttribute("computerList", computerArray);
-		req.setAttribute("nbOfComputer", nbComputer);
-		
-		req.getRequestDispatcher("/WEB-INF/dashboard.jsp").forward(req, resp);
 	}
 
 

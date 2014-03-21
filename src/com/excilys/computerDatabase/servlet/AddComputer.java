@@ -64,8 +64,9 @@ public class AddComputer extends HttpServlet{
 		boolean v1 = valid.get("name");
 		boolean v2 = valid.get("introduction");
 		boolean v3 = valid.get("discontinued");
+		boolean v4 = valid.get("discSupToIntro");
 		
-		if(v1 == false || v2 == false || v3 == false)
+		if(v1 == false || v2 == false || v3 == false || v4 == false)
 		{
 			CompanyService comps = CompanyService.getInstance();
 			ArrayList<Company> companyArray = comps.getListCompany();
@@ -75,6 +76,7 @@ public class AddComputer extends HttpServlet{
 			req.setAttribute("verifName", v1);
 			req.setAttribute("verifIntro", v2);
 			req.setAttribute("verifDisc", v3);
+			req.setAttribute("verifDate", v4);
 			req.setAttribute("computerDTO", cdto);
 			req.getRequestDispatcher("/WEB-INF/addComputer.jsp").forward(req, resp);
 		}

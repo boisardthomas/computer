@@ -11,7 +11,7 @@
 		<c:if test="${pages !=1}">
 			<a
 				href="ListComputer?page=1&search=${param.search}&typeOrd=${param.typeOrd}&ord=${param.ord}">1</a>
-			<bq />
+			&nbsp;
 			<a
 				href="ListComputer?page=<c:out value="${pages-1}"></c:out>&search=<c:out value="${param.search}"></c:out>
 					&typeOrd=<c:out value="${param.typeOrd}"></c:out>&ord=<c:out value="${param.ord}"></c:out>">previous</a>
@@ -24,7 +24,7 @@
 			<a
 				href="ListComputer?page=<c:out value="${pages+1}"></c:out>&search=<c:out value="${param.search}"></c:out>
 					&typeOrd=<c:out value="${param.typeOrd}"></c:out>&ord=<c:out value="${param.ord}"></c:out>">next</a>
-			<bq />&nbsp;
+			&nbsp;
 					<a
 				href="ListComputer?page=<c:out value="${nbOfPage}"></c:out>&search=<c:out value="${param.search}"></c:out>
 					&typeOrd=<c:out value="${param.typeOrd}"></c:out>&ord=<c:out value="${param.ord}"></c:out>">

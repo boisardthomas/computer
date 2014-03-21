@@ -38,7 +38,9 @@ public class ComputerDAO {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		Connection cn = null;
-
+		
+		
+		
 		cn = ComputerDatabase.getInstance().getConnection();
 
 		StringBuilder sb = new StringBuilder();
@@ -50,19 +52,23 @@ public class ComputerDAO {
 
 		if (typeOrd != null && !typeOrd.equals("") && ord != null	&& !ord.equals("")) {
 			sb.append(" order by ");
-
+			ord = (ord.equals("asc") || ord.equals("desc"))?ord:"asc";
 			switch (typeOrd) {
-			case "comp_name":
-				sb.append("cpt.name");
-				break;
-			case "comp_intro":
-				sb.append("cpt.introduced");
-				break;
-			case "comp_disc":
-				sb.append("cpt.discontinued");
-				break;
-			case "cpny_name":
-				sb.append("cpny.name");
+				case "comp_name":
+					sb.append("cpt.name");
+					break;
+				case "comp_intro":
+					sb.append("cpt.introduced");
+					break;
+				case "comp_disc":
+					sb.append("cpt.discontinued");
+					break;
+				case "cpny_name":
+					sb.append("cpny.name");
+					break;
+				default:
+					sb.append("cpt.id");
+					break;
 			}
 			sb.append(",cpt.name ");
 			sb.append(ord);

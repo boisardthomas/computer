@@ -39,6 +39,11 @@
 							date format : YYYY-MM-DD and must be valid
 						</span>
 					</c:if>			
+					<c:if test="${verifDate == false}">
+						<span class="label label-warning">
+							Discontinued date must to be greatter than Introduced Date!
+						</span>
+					</c:if>		
 				</div>
 			</div>
 			<div class="form-group">
@@ -52,10 +57,11 @@
 					</select>
 				</div>
 		</fieldset>
+		
 		<div class="form-group">
     		<div class="col-sm-offset-2 col-sm-6">
     			<input type="submit" value="Add" class="btn btn-primary">
-				or <a href="ListComputer?page=${param.page}&search=${param.search}&typeOrd=${param.typeOrd}&ord=${param.ord}" class="btn btn-info">Cancel</a>
+				or <a href="ListComputer?page=1" class="btn btn-info">Cancel</a>
 			</div>
 		</div>
 	</form>
