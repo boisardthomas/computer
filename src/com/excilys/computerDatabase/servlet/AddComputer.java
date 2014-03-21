@@ -67,10 +67,6 @@ public class AddComputer extends HttpServlet{
 		
 		if(v1 == false || v2 == false || v3 == false)
 		{
-			System.out.println(v1);
-			System.out.println(v2);
-			System.out.println(v3);
-			System.out.println(cdto);
 			CompanyService comps = CompanyService.getInstance();
 			ArrayList<Company> companyArray = comps.getListCompany();
 			

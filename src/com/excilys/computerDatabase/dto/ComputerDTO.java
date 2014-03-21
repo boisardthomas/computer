@@ -5,9 +5,9 @@ public class ComputerDTO {
 	private String nom;
 	private String introduced;
 	private String discontinued;
-	private int company;
+	private long company;
 	
-	public ComputerDTO(String nom, String introduced, String discontinued, int company) {
+	public ComputerDTO(String nom, String introduced, String discontinued, long company) {
 		super();
 		this.nom = nom;
 		this.introduced = introduced;
@@ -15,11 +15,11 @@ public class ComputerDTO {
 		this.company = company;
 	}
 
-	public int getCompany() {
+	public long getCompany() {
 		return company;
 	}
 
-	public void setCompany(int company) {
+	public void setCompany(long company) {
 		this.company = company;
 	}
 

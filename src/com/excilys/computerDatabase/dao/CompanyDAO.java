@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.excilys.computerDatabase.bean.Company;
+import com.excilys.computerDatabase.jdbc.ComputerDatabase;
+
 import org.slf4j.*;
 
 public class CompanyDAO {
@@ -37,7 +39,7 @@ public class CompanyDAO {
 		PreparedStatement st = null;
 		ResultSet rs = null;		
 		
-		cn = cndb;
+		cn = ComputerDatabase.getInstance().getConnection();
 					
 		String req = "select * from company;";
 			
@@ -58,6 +60,31 @@ public class CompanyDAO {
 		log.info("end of search for company");
 		
 		return companyArray;
+	}
+
+	public Company getCompany(long l) throws SQLException
+	{
+		log.info("start search for company");
+		
+		Connection cn = null;
+		PreparedStatement st = null;
+		ResultSet rs = null;	
+		
+		String req = "select * from company where id="+l;
+		
+		st = cn.prepareStatement(req);
+		
+		rs = st.executeQuery();
+		
+		Company cpn = null;
+		
+		if(rs.next())
+			cpn = Company.builder().id(rs.getLong(1)).name(rs.getString(2)).build();
+			
+		st.close();
+		rs.close();
+		
+		return cpn;
 	}
 	
 }

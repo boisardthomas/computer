@@ -59,4 +59,23 @@ public class CompanyService {
 		return companies;
 	}	
 	
+	public Company getCompany(long l)
+	{
+		Connection cn = cd.getConnection();
+		Company cpn = null;
+		
+		try {
+			cpn = cdao.getCompany(l);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally
+		{
+			cd.closeConnection();
+		}
+		
+		return cpn;
+	}
+	
 }
