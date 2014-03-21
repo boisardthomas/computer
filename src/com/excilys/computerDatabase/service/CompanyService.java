@@ -38,11 +38,9 @@ public class CompanyService {
 		ArrayList<Company> companies= new ArrayList<>();
 		
 		try {
-			ldao.addLog(cn, "list all company", "select");
+			ldao.addLog("list all company", "select");
 			companies.addAll(cdao.getListCompany(cn));
 			cn.commit();
-			cn.close();
-			cd.closeConnection();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -52,6 +50,10 @@ public class CompanyService {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+		}
+		finally
+		{
+			cd.closeConnection();
 		}
 		
 		return companies;

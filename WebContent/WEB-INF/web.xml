@@ -37,6 +37,6 @@
   	<servlet-name>DeleteComputer</servlet-name>
   	<url-pattern>/deleteComputer</url-pattern>
   </servlet-mapping>
-  
+
   
 </web-app>

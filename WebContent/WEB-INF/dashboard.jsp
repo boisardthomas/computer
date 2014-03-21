@@ -1,14 +1,11 @@
 <jsp:include page="../include/header.jsp" />
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="pagi" tagdir="/WEB-INF/tags" %>
 
 <section id="main">
 
-<c:set var="nbComputer" value="${nbOfComputer}" />
-<c:set var="nbOfPageF" value="${nbComputer/15.0}" />
-<fmt:parseNumber var="nbOfPage" integerOnly="true" value="${nbOfPageF+(1-(nbOfPageF%1))%1}" /><%-- ${N+(1-(N%1))%1} --%>
-	
-	<h1 id="homeTitle"><c:out value="${nbComputer}"></c:out> Computers found</h1>
+	<h1 id="homeTitle"><c:out value="${nbOfComputer}"></c:out> Computers found</h1>
 	<div id="actions">
 		<form action="ListComputer" method="GET">
 			<div class="col-lg-2">
@@ -20,44 +17,22 @@
 				value="Filter by name"
 				class="btn btn-primary">
 		</form>
-		<a class="btn btn-success" id="add" href="addComputer">Add Computer</a>
+		<a class="btn btn-success" id="add" href="addComputer?page=${param.page}&search=${param.search}&typeOrd=${param.typeOrd}&ord=${param.ord}">Add Computer</a>
 	</div>
 
-		<table>
-			<tr>
-				<c:set var="pages" value="${param.page}" />
-				<c:if test="${pages !=1}">
-					<a href="ListComputer?page=1&search=<c:out value="${param.search}"></c:out>
-					&typeOrd=<c:out value="${param.typeOrd}"></c:out>&ord=<c:out value="${param.ord}"></c:out>">1</a><bq>
-					<a href="ListComputer?page=<c:out value="${pages-1}"></c:out>&search=<c:out value="${param.search}"></c:out>
-					&typeOrd=<c:out value="${param.typeOrd}"></c:out>&ord=<c:out value="${param.ord}"></c:out>">previous</a>
-				</c:if>
-				Page : <c:out value="${pages}"></c:out> sur <c:out value="${nbOfPage}"></c:out>
-				<c:if test="${pages lt nbOfPage}">
-					<a href="ListComputer?page=<c:out value="${pages+1}"></c:out>&search=<c:out value="${param.search}"></c:out>
-					&typeOrd=<c:out value="${param.typeOrd}"></c:out>&ord=<c:out value="${param.ord}"></c:out>">next</a><bq>
-					<a href="ListComputer?page=<c:out value="${nbOfPage}"></c:out>&search=<c:out value="${param.search}"></c:out>
-					&typeOrd=<c:out value="${param.typeOrd}"></c:out>&ord=<c:out value="${param.ord}"></c:out>">
-					<c:out value="${nbOfPage}"></c:out></a>
-				</c:if>
-			</tr>
-		</table>
+		<pagi:pagination/>
 		
 		<table class="computers table table-striped table-bordered">
 			<thead>
 				<tr>
 					<!-- Variable declarations for passing labels as parameters -->
 					<!-- Table header for Computer Name -->
-					<th class="col2"><a href="ListComputer?page=1&search=<c:out value="${param.search}"></c:out>
-					&typeOrd=comp_name&ord=asc">Computer Name</a></th>
-					<th class="col3"><a href="ListComputer?page=1&search=<c:out value="${param.search}"></c:out>
-					&typeOrd=comp_intro&ord=asc">Introduced Date</a></th>
+					<th class="col2"><a href="ListComputer?page=1&search=${param.search}&typeOrd=comp_name&ord=asc">Computer Name</a></th>
+					<th class="col3"><a href="ListComputer?page=1&search=${param.search}&typeOrd=comp_intro&ord=asc">Introduced Date</a></th>
 					<!-- Table header for Discontinued Date -->
-					<th class="col3"><a href="ListComputer?page=1&search=<c:out value="${param.search}"></c:out>
-					&typeOrd=comp_disc&ord=asc">Discontinued Date</a></th>
+					<th class="col3"><a href="ListComputer?page=1&search=${param.search}&typeOrd=comp_disc&ord=asc">Discontinued Date</a></th>
 					<!-- Table header for Company -->
-					<th class="col5"><a href="ListComputer?page=1&search=<c:out value="${param.search}"></c:out>
-					&typeOrd=cpny_name&ord=asc">Company</a></th>
+					<th class="col5"><a href="ListComputer?page=1&search=${param.search}&typeOrd=cpny_name&ord=asc">Company</a></th>
 					<th class="col5">modification</th>
 				</tr>
 			</thead>
@@ -70,33 +45,16 @@
 						<td><c:out value="${comp.discontinuedDate}"></c:out></td>
 						<td><c:out value="${comp.company}"></c:out></td>
 						<td>
-							<a class="btn btn-success" id="add" href="updateComputer?id=<c:out value="${comp.id}"></c:out>">Update</a>
-							<a class="btn btn-danger" id="add" href="deleteComputer?id=<c:out value="${comp.id}"></c:out>" onclick="return confirm('Are you sure?')">Delete</a>
+							<a class="btn btn-success" id="add" href="updateComputer?id=${comp.id}&page=${param.page}&search=${param.search}&typeOrd=${param.typeOrd}&ord=${param.ord}">Update</a>
+							<a class="btn btn-danger" id="add" href="deleteComputer?id=${comp.id}" onclick="return confirm('Are you sure?')">Delete</a>
 						</td>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
 		
-		<table>
-			<tr>
-				<c:set var="pages" value="${param.page}" />
-				<c:if test="${pages !=1}">
-					<a href="ListComputer?page=1&search=<c:out value="${param.search}"></c:out>
-					&typeOrd=<c:out value="${param.typeOrd}"></c:out>&ord=<c:out value="${param.ord}"></c:out>">1</a><bq>
-					<a href="ListComputer?page=<c:out value="${pages-1}"></c:out>&search=<c:out value="${param.search}"></c:out>
-					&typeOrd=<c:out value="${param.typeOrd}"></c:out>&ord=<c:out value="${param.ord}"></c:out>">previous</a>
-				</c:if>
-				Page : <c:out value="${pages}"></c:out> sur <c:out value="${nbOfPage}"></c:out>
-				<c:if test="${pages lt nbOfPage}">
-					<a href="ListComputer?page=<c:out value="${pages+1}"></c:out>&search=<c:out value="${param.search}"></c:out>
-					&typeOrd=<c:out value="${param.typeOrd}"></c:out>&ord=<c:out value="${param.ord}"></c:out>">next</a><bq>
-					<a href="ListComputer?page=<c:out value="${nbOfPage}"></c:out>&search=<c:out value="${param.search}"></c:out>
-					&typeOrd=<c:out value="${param.typeOrd}"></c:out>&ord=<c:out value="${param.ord}"></c:out>">
-					<c:out value="${nbOfPage}"></c:out></a>
-				</c:if>
-			</tr>
-		</table>
+		<pagi:pagination/>
+		
 			
 </section>
 

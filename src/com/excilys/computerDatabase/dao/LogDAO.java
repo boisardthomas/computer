@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import com.excilys.computerDatabase.jdbc.ComputerDatabase;
+
 public class LogDAO {
 
 	private static LogDAO ldao;
@@ -23,12 +25,12 @@ public class LogDAO {
 		return ldao;
 	}
 	
-	public void addLog(Connection cndb, String operation, String type) throws SQLException
+	public void addLog( String operation, String type) throws SQLException
 	{
 		Connection cn = null;
 		PreparedStatement st  = null;
 		
-		cn = cndb;
+		cn = ComputerDatabase.getInstance().getConnection();
 		st = cn.prepareStatement("insert into log values (default,?,NOW(),?)");
 		st.setString(1, operation);
 		st.setString(2, type);

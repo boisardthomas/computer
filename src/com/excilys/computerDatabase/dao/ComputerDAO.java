@@ -48,8 +48,7 @@ public class ComputerDAO {
 		sb.append(search);
 		sb.append("%'");
 
-		if (typeOrd != null && !typeOrd.equals("") && ord != null
-				&& !ord.equals("")) {
+		if (typeOrd != null && !typeOrd.equals("") && ord != null	&& !ord.equals("")) {
 			sb.append(" order by ");
 
 			switch (typeOrd) {
@@ -168,8 +167,13 @@ public class ComputerDAO {
 		st.setString(1, name);
 		st.setDate(2, new java.sql.Date(intro.getTime()));
 		st.setDate(3, new java.sql.Date(disc.getTime()));
-		st.setInt(4, company);
-
+		
+		if (company > 0) {
+			st.setInt(4, company);
+		} else {
+			st.setNull(4, Types.INTEGER);
+		}
+		
 		st.executeUpdate();
 
 		ResultSet rs = st.getGeneratedKeys();
