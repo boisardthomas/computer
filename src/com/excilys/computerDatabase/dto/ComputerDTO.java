@@ -1,7 +1,5 @@
 package com.excilys.computerDatabase.dto;
 
-import java.util.HashMap;
-
 public class ComputerDTO {
 
 	private String nom;

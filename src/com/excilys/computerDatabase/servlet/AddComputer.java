@@ -5,12 +5,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.ws.Response;
 
 import com.excilys.computerDatabase.bean.Company;
 import com.excilys.computerDatabase.dto.ComputerDTO;
@@ -59,9 +59,11 @@ public class AddComputer extends HttpServlet{
 		Validator val = new Validator();
 		ComputerDTO cdto = new ComputerDTO(name,req.getParameter("introducedDate"),req.getParameter("discontinuedDate"),id_comp);
 		
-		boolean v1 = val.verification(cdto).get("name");
-		boolean v2 = val.verification(cdto).get("introduction");
-		boolean v3 = val.verification(cdto).get("discontinued");
+		Map<String, Boolean> valid = val.verification(cdto);
+		
+		boolean v1 = valid.get("name");
+		boolean v2 = valid.get("introduction");
+		boolean v3 = valid.get("discontinued");
 		
 		if(v1 == false || v2 == false || v3 == false)
 		{
