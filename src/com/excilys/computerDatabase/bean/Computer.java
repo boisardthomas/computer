@@ -8,6 +8,7 @@ public class Computer {
 	private String name;
 	private Date introducedDate;
 	private Date discontinuedDate;
+	private Long id_Company;
 	private String Company;
 
 	public Computer()
@@ -94,6 +95,11 @@ public class Computer {
 			return this;
 		}
 
+		public Builder company(Long id_company) {
+			this.computer.id_Company = id_company;
+			return this;
+		}		
+		
 		public Builder company(String company) {
 			this.computer.Company = company;
 			return this;
@@ -103,6 +109,14 @@ public class Computer {
 			return this.computer;
 		}
 
+	}
+
+	public Long getId_Company() {
+		return id_Company;
+	}
+
+	public void setId_Company(Long id_Company) {
+		this.id_Company = id_Company;
 	}
 
 	public static Builder builder() {
