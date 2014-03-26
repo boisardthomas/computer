@@ -39,6 +39,11 @@
     	<artifactId>tomcat-servlet-api</artifactId>
     	<version>8.0.3</version>
     </dependency>
+    <dependency>
+    	<groupId>joda-time</groupId>
+    	<artifactId>joda-time</artifactId>
+    	<version>2.3</version>
+    </dependency>
   </dependencies>
   <build>
     <finalName>computer-database</finalName>
@@ -51,6 +56,11 @@
     			<source>1.7</source>
     			<target>1.7</target>
     		</configuration>
+    	</plugin>
+    	<plugin>
+    		<groupId>org.apache.maven.plugins</groupId>
+    		<artifactId>maven-war-plugin</artifactId>
+    		<version>2.3</version>
     	</plugin>
     </plugins>
   </build>

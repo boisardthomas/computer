@@ -8,6 +8,7 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,9 +86,21 @@ public class ComputerDAO {
 		while (rs.next()) {
 			// new Computer
 			// (rs.getLong(1),rs.getString(2),rs.getDate(3),rs.getDate(4),rs.getString(5));
+			LocalDate localIntro = null;
+			LocalDate localDisc = null;
+			java.sql.Date sqlIntro = rs.getDate(3);
+			java.sql.Date sqlDisc = rs.getDate(4);
+			
+			if(sqlIntro!=null)
+				localIntro = new LocalDate(sqlIntro.getTime());
+			if(sqlDisc!=null)
+				localDisc = new LocalDate(sqlDisc.getTime());
+				
 			Computer c = Computer.builder().id(rs.getLong(1))
-					.name(rs.getString(2)).introduced(rs.getDate(3))
-					.discontinued(rs.getDate(4)).company(rs.getString(5))
+					.name(rs.getString(2))
+					.introduced(localIntro)
+					.discontinued(localDisc)
+					.company(rs.getString(5))
 					.build();
 			computerArray.add(c);
 		}
@@ -146,8 +159,23 @@ public class ComputerDAO {
 		rs = st.executeQuery();
 
 		while (rs.next()) {
-			computer = new Computer(rs.getLong(1), rs.getString(2),
-					rs.getDate(3), rs.getDate(4), rs.getString(5));
+			LocalDate localIntro = null;
+			LocalDate localDisc = null;
+			java.sql.Date sqlIntro = rs.getDate(3);
+			java.sql.Date sqlDisc = rs.getDate(4);
+			
+			if(sqlIntro!=null)
+				localIntro = new LocalDate(sqlIntro.getTime());
+			if(sqlDisc!=null)
+				localDisc = new LocalDate(sqlDisc.getTime());
+				
+			computer = Computer.builder().id(rs.getLong(1))
+					.name(rs.getString(2))
+					.introduced(localIntro)
+					.discontinued(localDisc)
+					.company(rs.getString(5))
+					.build();
+ 
 		}
 
 		st.close();
@@ -157,8 +185,8 @@ public class ComputerDAO {
 		return computer;
 	}
 
-	public Long addComputer(String name, Date intro,
-			Date disc, int company) throws SQLException {
+	public Long addComputer(String name, LocalDate intro,
+			LocalDate disc, int company) throws SQLException {
 		log.info("Start inserting a new computer");
 
 		Connection cn = null;
@@ -171,8 +199,8 @@ public class ComputerDAO {
 		st = cn.prepareStatement(req);
 
 		st.setString(1, name);
-		st.setDate(2, new java.sql.Date(intro.getTime()));
-		st.setDate(3, new java.sql.Date(disc.getTime()));
+		st.setDate(2, new java.sql.Date(intro.toDate().getTime()));
+		st.setDate(3, new java.sql.Date(disc.toDate().getTime()));
 		
 		if (company > 0) {
 			st.setInt(4, company);
@@ -196,7 +224,7 @@ public class ComputerDAO {
 	}
 
 	public void updateComputer(int id, String name,
-			Date intro, Date disc, int company_id) throws SQLException {
+			LocalDate intro, LocalDate disc, int company_id) throws SQLException {
 		log.info("Start updating computer");
 
 		Connection cn = null;
@@ -209,8 +237,8 @@ public class ComputerDAO {
 		st = cn.prepareStatement(req);
 
 		st.setString(1, name);
-		st.setDate(2, new java.sql.Date(intro.getTime()));
-		st.setDate(3, new java.sql.Date(disc.getTime()));
+		st.setDate(2, new java.sql.Date(intro.toDate().getTime()));
+		st.setDate(3, new java.sql.Date(disc.toDate().getTime()));
 
 		if (company_id > 0) {
 			st.setInt(4, company_id);

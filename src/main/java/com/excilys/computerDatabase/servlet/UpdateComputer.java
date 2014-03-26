@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.joda.time.LocalDate;
+
 import com.excilys.computerDatabase.bean.Company;
 import com.excilys.computerDatabase.bean.Computer;
 import com.excilys.computerDatabase.dto.ComputerDTO;
@@ -61,8 +63,10 @@ public class UpdateComputer extends HttpServlet {
 		
 		int id = Integer.parseInt(req.getParameter("id"));
 		String name =req.getParameter("name");
-		Date intro = null;
-		Date disc = null; 
+		String sIntro = req.getParameter("introducedDate");
+		String sDisc = req.getParameter("discontinuedDate");
+		LocalDate intro = null;
+		LocalDate disc = null; 
 		String company = req.getParameter("company");
 		
 		int id_comp = 0;
@@ -77,7 +81,7 @@ public class UpdateComputer extends HttpServlet {
 		}
 		
 		Validator val = new Validator();
-		ComputerDTO cdto = new ComputerDTO(name,req.getParameter("introducedDate"),req.getParameter("discontinuedDate"),id_comp);
+		ComputerDTO cdto = new ComputerDTO(name,sIntro,sDisc,id_comp);
 		
 		Map<String, Boolean> valid = val.verification(cdto);
 		
@@ -98,22 +102,16 @@ public class UpdateComputer extends HttpServlet {
 		}
 		else
 		{
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			try 
-			{
-				intro = sdf.parse(req.getParameter("introducedDate"));
-			} catch (ParseException e1) {
-				intro = new Date(0);
-			}
+
+			if(sIntro==null || sIntro.equals(""))
+				intro = new LocalDate(0);
+			else
+				intro = LocalDate.parse(sIntro);
 			
-			try
-			{	
-				disc  = sdf.parse(req.getParameter("discontinuedDate"));
-			}
-			catch (ParseException e1)
-			{
-				disc = new Date(0);
-			}
+			if(sDisc==null || sDisc.equals(""))
+				disc = new LocalDate(0);
+			else
+				disc  = LocalDate.parse(sDisc);
 			
 			cs.updateComputer(id,name, intro, disc, id_comp);
 			

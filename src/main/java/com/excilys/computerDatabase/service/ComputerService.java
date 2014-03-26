@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.joda.time.LocalDate;
+
 import com.excilys.computerDatabase.bean.Computer;
 import com.excilys.computerDatabase.dao.ComputerDAO;
 import com.excilys.computerDatabase.dao.LogDAO;
@@ -25,7 +27,7 @@ public class ComputerService {
 	}
 	
 	public static ComputerService getInstance()
-	{
+	{System.out.println();
 		if(computerService == null)
 			computerService  = new ComputerService();
 		return computerService;
@@ -113,7 +115,7 @@ public class ComputerService {
 		return computer;
 	}
 	
-	public void addComputer(String name, Date intro, Date disc, int company)
+	public void addComputer(String name, LocalDate intro, LocalDate disc, int company)
 	{
 		Connection cn = cd.getConnection();
 				
@@ -138,7 +140,7 @@ public class ComputerService {
 		
 	}
 	
-	public void updateComputer(int id, String name, Date intro, Date disc, int company_id)
+	public void updateComputer(int id, String name, LocalDate intro, LocalDate disc, int company_id)
 	{
 		Connection cn = cd.getConnection();
 	
