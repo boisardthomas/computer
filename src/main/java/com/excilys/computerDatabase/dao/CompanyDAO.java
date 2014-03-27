@@ -11,23 +11,11 @@ import com.excilys.computerDatabase.jdbc.ComputerDatabase;
 
 import org.slf4j.*;
 
-public class CompanyDAO {
+public enum CompanyDAO {
 
+	INSTANCE;
+	
 	private static Logger log = LoggerFactory.getLogger(CompanyDAO.class);
-	
-	private static CompanyDAO cdao;
-	
-	private CompanyDAO()
-	{
-		
-	}
-	
-	public static CompanyDAO getInstance()
-	{
-		if(cdao == null)
-			cdao = new CompanyDAO();
-		return cdao;
-	}
 	
 	public ArrayList<Company> getListCompany(Connection cndb) throws SQLException
 	{
@@ -69,6 +57,8 @@ public class CompanyDAO {
 		Connection cn = null;
 		PreparedStatement st = null;
 		ResultSet rs = null;	
+		
+		cn = ComputerDatabase.getInstance().getConnection();
 		
 		String req = "select * from company where id="+l;
 		

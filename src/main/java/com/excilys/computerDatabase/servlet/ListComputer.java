@@ -31,7 +31,7 @@ public class ListComputer extends HttpServlet {
 		{
 			page= Integer.parseInt(req.getParameter("page"));
 			
-			ComputerService cs= ComputerService.getInstance();
+			ComputerService cs= ComputerService.INSTANCE;
 			
 			ArrayList<Computer> computerArray;
 			int nbComputer;

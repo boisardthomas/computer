@@ -9,28 +9,13 @@ import com.excilys.computerDatabase.dao.CompanyDAO;
 import com.excilys.computerDatabase.dao.LogDAO;
 import com.excilys.computerDatabase.jdbc.ComputerDatabase;
 
-public class CompanyService {
-
-	private static CompanyDAO cdao;
-	private static CompanyService cs;
-	private static LogDAO ldao;
-	private static ComputerDatabase cd;
+public enum CompanyService {
+	INSTANCE;
 	
-	
-	private CompanyService()
-	{
-		cdao = CompanyDAO.getInstance();
-		cd = ComputerDatabase.getInstance();
-		ldao = LogDAO.getInstance();
-	}
-	
-	public static CompanyService getInstance()
-	{
-		if(cs == null)
-			cs = new CompanyService();
-		return cs;
-	}
-	
+	private static CompanyDAO cdao = CompanyDAO.INSTANCE;
+	private static LogDAO ldao = LogDAO.INSTANCE;
+	private static ComputerDatabase cd = ComputerDatabase.getInstance();
+		
 	public ArrayList<Company> getListCompany()
 	{
 		Connection cn = cd.getConnection();
@@ -61,7 +46,7 @@ public class CompanyService {
 	
 	public Company getCompany(long l)
 	{
-		Connection cn = cd.getConnection();
+		cd.getConnection();
 		Company cpn = null;
 		
 		try {

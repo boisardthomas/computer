@@ -1,10 +1,7 @@
 package com.excilys.computerDatabase.servlet;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -43,8 +40,8 @@ public class UpdateComputer extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		int id = Integer.parseInt(req.getParameter("id"));
 				
-		CompanyService companyService = CompanyService.getInstance();
-		ComputerService cs = ComputerService.getInstance();
+		CompanyService companyService = CompanyService.INSTANCE;
+		ComputerService cs = ComputerService.INSTANCE;
 		ArrayList<Company> companyArray = companyService.getListCompany();
 		
 		Computer computer = cs.getComputer(id);
@@ -58,8 +55,8 @@ public class UpdateComputer extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		ComputerService cs = ComputerService.getInstance(); 
-		CompanyService companyService = CompanyService.getInstance();
+		ComputerService cs = ComputerService.INSTANCE; 
+		CompanyService companyService = CompanyService.INSTANCE;
 		
 		int id = Integer.parseInt(req.getParameter("id"));
 		String name =req.getParameter("name");

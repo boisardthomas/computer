@@ -6,8 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
-import java.util.Date;
-
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,20 +13,11 @@ import org.slf4j.LoggerFactory;
 import com.excilys.computerDatabase.bean.Computer;
 import com.excilys.computerDatabase.jdbc.ComputerDatabase;
 
-public class ComputerDAO {
-
-	private static Logger log = LoggerFactory.getLogger(ComputerDAO.class);
-	private static ComputerDAO cdao;
-
-	private ComputerDAO() {
-
-	}
-
-	public static ComputerDAO getInstance() {
-		if (cdao == null)
-			cdao = new ComputerDAO();
-		return cdao;
-	}
+public enum ComputerDAO {
+	INSTANCE;
+	
+	private Logger log = LoggerFactory.getLogger(ComputerDAO.class);
+	
 
 	public ArrayList<Computer> getListComputer(String search,
 			String typeOrd, String ord, int page) throws SQLException {
@@ -39,17 +28,12 @@ public class ComputerDAO {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		Connection cn = null;
-		
-		
-		
+				
 		cn = ComputerDatabase.getInstance().getConnection();
 
 		StringBuilder sb = new StringBuilder();
-		sb.append("select cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cpny.name from computer as cpt left outer join company as cpny on cpt.company_id=cpny.id where cpt.name like '%");
-		sb.append(search);
-		sb.append("%' or cpny.name like '%");
-		sb.append(search);
-		sb.append("%'");
+		sb.append("select cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cpny.name from computer as cpt left outer join company as cpny on cpt.company_id=cpny.id where cpt.name like ? or cpny.name like ?");
+		
 
 		if (typeOrd != null && !typeOrd.equals("") && ord != null	&& !ord.equals("")) {
 			sb.append(" order by ");
@@ -78,14 +62,15 @@ public class ComputerDAO {
 		sb.append(" limit ");
 		sb.append((page - 1) * 15);
 		sb.append(",15");
-
+		
 		st = cn.prepareStatement(sb.toString());
 
+		st.setString(1, "%" + search + "%");
+		st.setString(2, "%" + search + "%");
+		
 		rs = st.executeQuery();
 
 		while (rs.next()) {
-			// new Computer
-			// (rs.getLong(1),rs.getString(2),rs.getDate(3),rs.getDate(4),rs.getString(5));
 			LocalDate localIntro = null;
 			LocalDate localDisc = null;
 			java.sql.Date sqlIntro = rs.getDate(3);
@@ -122,14 +107,14 @@ public class ComputerDAO {
 		cn = ComputerDatabase.getInstance().getConnection();
 
 		StringBuilder sb = new StringBuilder();
-		sb.append("select count(*) as nbComputer from computer as cpt left outer join company as cpny on cpt.company_id=cpny.id where cpt.name like '%");
-		sb.append(search);
-		sb.append("%' or cpny.name like '%");
-		sb.append(search);
-		sb.append("%'");
-
+		sb.append("select count(*) as nbComputer from computer as cpt left outer join company as cpny on cpt.company_id=cpny.id where cpt.name like ?");
+		sb.append(" or cpny.name like ?");
+		
 		st = cn.prepareStatement(sb.toString());
 
+		st.setString(1, "%" + search + "%");
+		st.setString(2, "%" + search + "%");
+		
 		rs = st.executeQuery();
 
 		rs.next();
@@ -199,8 +184,12 @@ public class ComputerDAO {
 		st = cn.prepareStatement(req);
 
 		st.setString(1, name);
+		
+		
 		st.setDate(2, new java.sql.Date(intro.toDate().getTime()));
 		st.setDate(3, new java.sql.Date(disc.toDate().getTime()));
+
+		System.out.println(intro);
 		
 		if (company > 0) {
 			st.setInt(4, company);

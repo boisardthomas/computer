@@ -34,7 +34,7 @@ public class DeleteComputer extends HttpServlet {
 		{
 			int id = Integer.parseInt(req.getParameter("id"));
 			
-			ComputerService cs = ComputerService.getInstance();
+			ComputerService cs = ComputerService.INSTANCE;
 			
 			cs.deleteComputer(id); 
 			

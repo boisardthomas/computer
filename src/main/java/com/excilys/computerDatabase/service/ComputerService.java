@@ -3,8 +3,6 @@ package com.excilys.computerDatabase.service;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
-
 import org.joda.time.LocalDate;
 
 import com.excilys.computerDatabase.bean.Computer;
@@ -12,26 +10,13 @@ import com.excilys.computerDatabase.dao.ComputerDAO;
 import com.excilys.computerDatabase.dao.LogDAO;
 import com.excilys.computerDatabase.jdbc.ComputerDatabase;
 
-public class ComputerService {
-
-	private static ComputerDAO computerDAO;
-	private static ComputerDatabase cd;
-	private static ComputerService computerService;
-	private static LogDAO ldao;
-		
-	private ComputerService()
-	{
-		computerDAO = ComputerDAO.getInstance();
-		cd = ComputerDatabase.getInstance();
-		ldao = LogDAO.getInstance();
-	}
+public enum ComputerService {
+	INSTANCE;
+	private static ComputerDAO computerDAO = ComputerDAO.INSTANCE;
+	private static ComputerDatabase cd = ComputerDatabase.getInstance();
 	
-	public static ComputerService getInstance()
-	{System.out.println();
-		if(computerService == null)
-			computerService  = new ComputerService();
-		return computerService;
-	}
+	private static LogDAO ldao = LogDAO.INSTANCE;
+		
 	
 	public ArrayList<Computer> getList(String search, String typeOrd, String ord, int page)
 	{

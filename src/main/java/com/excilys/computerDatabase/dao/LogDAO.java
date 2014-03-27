@@ -6,24 +6,9 @@ import java.sql.SQLException;
 
 import com.excilys.computerDatabase.jdbc.ComputerDatabase;
 
-public class LogDAO {
+public enum LogDAO {
 
-	private static LogDAO ldao;
-	
-	private LogDAO()
-	{
-		
-	}
-	
-	public static LogDAO getInstance()
-	{
-		if(ldao == null)
-		{
-			ldao = new LogDAO();
-		}
-		
-		return ldao;
-	}
+	INSTANCE;
 	
 	public void addLog( String operation, String type) throws SQLException
 	{

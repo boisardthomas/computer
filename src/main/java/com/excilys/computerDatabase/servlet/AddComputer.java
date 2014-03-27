@@ -1,10 +1,7 @@
 package com.excilys.computerDatabase.servlet;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -30,7 +27,7 @@ public class AddComputer extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		CompanyService cs = CompanyService.getInstance();
+		CompanyService cs = CompanyService.INSTANCE;
 		ArrayList<Company> companyArray = cs.getListCompany();
 		
 		req.setAttribute("companies", companyArray);		
@@ -40,7 +37,7 @@ public class AddComputer extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		ComputerService cs = ComputerService.getInstance(); 
+		ComputerService cs = ComputerService.INSTANCE; 
 		
 		String name = req.getParameter("name");
 		String sIntro = req.getParameter("introducedDate");
@@ -72,7 +69,7 @@ public class AddComputer extends HttpServlet{
 		
 		if(v1 == false || v2 == false || v3 == false || v4 == false)
 		{
-			CompanyService comps = CompanyService.getInstance();
+			CompanyService comps = CompanyService.INSTANCE;
 			ArrayList<Company> companyArray = comps.getListCompany();
 			
 			req.setAttribute("companies", companyArray);		
