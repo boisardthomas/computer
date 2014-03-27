@@ -6,14 +6,15 @@ import java.sql.SQLException;
 import com.jolbox.bonecp.BoneCP;
 import com.jolbox.bonecp.BoneCPConfig;
 
-public class ComputerDatabase {
+public enum ComputerDatabase {
 
-	private static ComputerDatabase computerDatabase;
-	private static BoneCPConfig config = new BoneCPConfig();
-	private static BoneCP connectionPool;
-	private static ThreadLocal<Connection> threadConnection;
+	INSTANCE;
 	
-	private ComputerDatabase()
+	private BoneCPConfig config = new BoneCPConfig();
+	private BoneCP connectionPool;
+	private ThreadLocal<Connection> threadConnection;
+	
+	ComputerDatabase()
 	{
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -33,15 +34,6 @@ public class ComputerDatabase {
 		
 	}
 	
-	public static ComputerDatabase getInstance()
-	{
-		if(computerDatabase==null)
-		{
-			computerDatabase = new ComputerDatabase();
-		}
-		
-		return computerDatabase;
-	}
 	
 	public Connection getConnection()
 	{
@@ -73,7 +65,7 @@ public class ComputerDatabase {
 		threadConnection.set(null);
 	}
 	
-	public static void close()
+	public void close()
 	{
 		connectionPool.shutdown();
 	}

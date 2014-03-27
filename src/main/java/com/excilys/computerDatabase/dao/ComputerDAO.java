@@ -29,7 +29,7 @@ public enum ComputerDAO {
 		ResultSet rs = null;
 		Connection cn = null;
 				
-		cn = ComputerDatabase.getInstance().getConnection();
+		cn = ComputerDatabase.INSTANCE.getConnection();
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("select cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cpny.name from computer as cpt left outer join company as cpny on cpt.company_id=cpny.id where cpt.name like ? or cpny.name like ?");
@@ -104,7 +104,7 @@ public enum ComputerDAO {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 
-		cn = ComputerDatabase.getInstance().getConnection();
+		cn = ComputerDatabase.INSTANCE.getConnection();
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("select count(*) as nbComputer from computer as cpt left outer join company as cpny on cpt.company_id=cpny.id where cpt.name like ?");
@@ -135,7 +135,7 @@ public enum ComputerDAO {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 
-		cn = ComputerDatabase.getInstance().getConnection();
+		cn = ComputerDatabase.INSTANCE.getConnection();
 
 		String req = "select cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cpny.name from computer as cpt left outer join company as cpny on cpt.company_id=cpny.id where cpt.id=?;";
 
@@ -177,7 +177,7 @@ public enum ComputerDAO {
 		Connection cn = null;
 		PreparedStatement st = null;
 
-		cn = ComputerDatabase.getInstance().getConnection();
+		cn = ComputerDatabase.INSTANCE.getConnection();
 
 		String req = "insert into computer values(default,?,?,?,?)";
 
@@ -219,7 +219,7 @@ public enum ComputerDAO {
 		Connection cn = null;
 		PreparedStatement st = null;
 
-		cn = ComputerDatabase.getInstance().getConnection();
+		cn = ComputerDatabase.INSTANCE.getConnection();
 
 		String req = "update computer set name=?, introduced=?, discontinued=?, company_id=? where id =?;";
 
@@ -249,7 +249,7 @@ public enum ComputerDAO {
 		Connection cn = null;
 		PreparedStatement st = null;
 
-		cn = ComputerDatabase.getInstance().getConnection();
+		cn = ComputerDatabase.INSTANCE.getConnection();
 
 		String req = "delete from computer where id=?;";
 

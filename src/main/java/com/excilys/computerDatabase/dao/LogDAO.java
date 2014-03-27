@@ -15,7 +15,7 @@ public enum LogDAO {
 		Connection cn = null;
 		PreparedStatement st  = null;
 		
-		cn = ComputerDatabase.getInstance().getConnection();
+		cn = ComputerDatabase.INSTANCE.getConnection();
 		st = cn.prepareStatement("insert into log values (default,?,NOW(),?)");
 		st.setString(1, operation);
 		st.setString(2, type);

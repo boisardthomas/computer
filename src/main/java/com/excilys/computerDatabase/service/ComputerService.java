@@ -13,7 +13,7 @@ import com.excilys.computerDatabase.jdbc.ComputerDatabase;
 public enum ComputerService {
 	INSTANCE;
 	private static ComputerDAO computerDAO = ComputerDAO.INSTANCE;
-	private static ComputerDatabase cd = ComputerDatabase.getInstance();
+	private static ComputerDatabase cd = ComputerDatabase.INSTANCE;
 	
 	private static LogDAO ldao = LogDAO.INSTANCE;
 		

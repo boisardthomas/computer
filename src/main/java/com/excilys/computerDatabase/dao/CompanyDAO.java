@@ -27,7 +27,7 @@ public enum CompanyDAO {
 		PreparedStatement st = null;
 		ResultSet rs = null;		
 		
-		cn = ComputerDatabase.getInstance().getConnection();
+		cn = ComputerDatabase.INSTANCE.getConnection();
 					
 		String req = "select * from company;";
 			
@@ -58,7 +58,7 @@ public enum CompanyDAO {
 		PreparedStatement st = null;
 		ResultSet rs = null;	
 		
-		cn = ComputerDatabase.getInstance().getConnection();
+		cn = ComputerDatabase.INSTANCE.getConnection();
 		
 		String req = "select * from company where id="+l;
 		

@@ -14,7 +14,7 @@ public enum CompanyService {
 	
 	private static CompanyDAO cdao = CompanyDAO.INSTANCE;
 	private static LogDAO ldao = LogDAO.INSTANCE;
-	private static ComputerDatabase cd = ComputerDatabase.getInstance();
+	private static ComputerDatabase cd = ComputerDatabase.INSTANCE;
 		
 	public ArrayList<Company> getListCompany()
 	{
