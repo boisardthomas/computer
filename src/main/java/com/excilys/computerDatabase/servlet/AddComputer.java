@@ -4,12 +4,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.joda.time.LocalDate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.computerDatabase.bean.Company;
 import com.excilys.computerDatabase.dto.ComputerDTO;
@@ -23,22 +26,27 @@ public class AddComputer extends HttpServlet{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+			
+	@Autowired
+	private CompanyService cs;
+	@Autowired
+	private ComputerService cpts;	
+	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		CompanyService cs = CompanyService.INSTANCE;
+		
 		ArrayList<Company> companyArray = cs.getListCompany();
 		
 		req.setAttribute("companies", companyArray);		
+		
 		req.getRequestDispatcher("/WEB-INF/addComputer.jsp").forward(req, resp);
 	}
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		ComputerService cs = ComputerService.INSTANCE; 
-		
+			
 		String name = req.getParameter("name");
 		String sIntro = req.getParameter("introducedDate");
 		String sDisc = req.getParameter("discontinuedDate");
@@ -69,8 +77,8 @@ public class AddComputer extends HttpServlet{
 		
 		if(v1 == false || v2 == false || v3 == false || v4 == false)
 		{
-			CompanyService comps = CompanyService.INSTANCE;
-			ArrayList<Company> companyArray = comps.getListCompany();
+			
+			ArrayList<Company> companyArray = cs.getListCompany();
 			
 			req.setAttribute("companies", companyArray);		
 			
@@ -79,6 +87,7 @@ public class AddComputer extends HttpServlet{
 			req.setAttribute("verifDisc", v3);
 			req.setAttribute("verifDate", v4);
 			req.setAttribute("computerDTO", cdto);
+			
 			req.getRequestDispatcher("/WEB-INF/addComputer.jsp").forward(req, resp);
 		}
 		else
@@ -94,15 +103,19 @@ public class AddComputer extends HttpServlet{
 			else
 				disc  = LocalDate.parse(sDisc);
 			
-			cs.addComputer(name, intro, disc, id_comp);
+			cpts.addComputer(name, intro, disc, id_comp);
 			
-			int page = (int)(Math.ceil(cs.nbComputer("")/15.0));
-			
+			int page = (int)(Math.ceil(cpts.nbComputer("")/15.0));
+		
 			resp.sendRedirect("ListComputer?page="+page);			
 		}
 		
 	}
-	
-	
 
+	public void init(ServletConfig config) throws ServletException {
+	    super.init(config);
+	    SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
+	      getServletContext());
+	}
+	
 }

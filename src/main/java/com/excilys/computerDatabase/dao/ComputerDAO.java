@@ -6,18 +6,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
+
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.computerDatabase.bean.Computer;
 import com.excilys.computerDatabase.jdbc.ComputerDatabase;
 
-public enum ComputerDAO {
-	INSTANCE;
+@Repository
+public class ComputerDAO {
 	
 	private Logger log = LoggerFactory.getLogger(ComputerDAO.class);
 	
+	@Autowired
+	private ComputerDatabase computerDatabase;
 
 	public ArrayList<Computer> getListComputer(String search,
 			String typeOrd, String ord, int page) throws SQLException {
@@ -29,7 +34,7 @@ public enum ComputerDAO {
 		ResultSet rs = null;
 		Connection cn = null;
 				
-		cn = ComputerDatabase.INSTANCE.getConnection();
+		cn = computerDatabase.getConnection();
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("select cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cpny.name from computer as cpt left outer join company as cpny on cpt.company_id=cpny.id where cpt.name like ? or cpny.name like ?");
@@ -104,7 +109,7 @@ public enum ComputerDAO {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 
-		cn = ComputerDatabase.INSTANCE.getConnection();
+		cn = computerDatabase.getConnection();
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("select count(*) as nbComputer from computer as cpt left outer join company as cpny on cpt.company_id=cpny.id where cpt.name like ?");
@@ -135,7 +140,7 @@ public enum ComputerDAO {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 
-		cn = ComputerDatabase.INSTANCE.getConnection();
+		cn = computerDatabase.getConnection();
 
 		String req = "select cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cpny.name from computer as cpt left outer join company as cpny on cpt.company_id=cpny.id where cpt.id=?;";
 
@@ -177,7 +182,7 @@ public enum ComputerDAO {
 		Connection cn = null;
 		PreparedStatement st = null;
 
-		cn = ComputerDatabase.INSTANCE.getConnection();
+		cn = computerDatabase.getConnection();
 
 		String req = "insert into computer values(default,?,?,?,?)";
 
@@ -219,7 +224,7 @@ public enum ComputerDAO {
 		Connection cn = null;
 		PreparedStatement st = null;
 
-		cn = ComputerDatabase.INSTANCE.getConnection();
+		cn = computerDatabase.getConnection();
 
 		String req = "update computer set name=?, introduced=?, discontinued=?, company_id=? where id =?;";
 
@@ -249,7 +254,7 @@ public enum ComputerDAO {
 		Connection cn = null;
 		PreparedStatement st = null;
 
-		cn = ComputerDatabase.INSTANCE.getConnection();
+		cn = computerDatabase.getConnection();
 
 		String req = "delete from computer where id=?;";
 
@@ -264,4 +269,8 @@ public enum ComputerDAO {
 		log.info("Computer has been deleted successfully");
 	}
 
+	public void setComputerDatabase(ComputerDatabase computerDatabase) {
+		this.computerDatabase = computerDatabase;
+	}
+	
 }

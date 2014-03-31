@@ -4,24 +4,37 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.excilys.computerDatabase.bean.Company;
 import com.excilys.computerDatabase.dao.CompanyDAO;
 import com.excilys.computerDatabase.dao.LogDAO;
 import com.excilys.computerDatabase.jdbc.ComputerDatabase;
 
-public enum CompanyService {
-	INSTANCE;
+@Service
+public class CompanyService {
 	
-	private static CompanyDAO cdao = CompanyDAO.INSTANCE;
-	private static LogDAO ldao = LogDAO.INSTANCE;
-	private static ComputerDatabase cd = ComputerDatabase.INSTANCE;
+	@Autowired
+	private CompanyDAO cdao;
+	
+	@Autowired
+	private LogDAO ldao;
+	
+	@Autowired
+	private ComputerDatabase cd;
+	
+	public CompanyService()
+	{
 		
+	}
+	
 	public ArrayList<Company> getListCompany()
 	{
 		Connection cn = cd.getConnection();
 		
 		ArrayList<Company> companies= new ArrayList<>();
-		
+		System.out.println(cdao);
 		try {
 			ldao.addLog("list all company", "select");
 			companies.addAll(cdao.getListCompany(cn));
@@ -63,4 +76,16 @@ public enum CompanyService {
 		return cpn;
 	}
 	
+	public void setCdao(CompanyDAO cdao) {
+		this.cdao = cdao;
+	}
+
+	public void setLdao(LogDAO ldao) {
+		this.ldao = ldao;
+	}
+
+	public void setCd(ComputerDatabase cd) {
+		this.cd = cd;
+	}
+		
 }

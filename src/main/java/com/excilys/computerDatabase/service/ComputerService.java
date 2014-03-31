@@ -3,20 +3,33 @@ package com.excilys.computerDatabase.service;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
 import org.joda.time.LocalDate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.stereotype.Service;
 
 import com.excilys.computerDatabase.bean.Computer;
 import com.excilys.computerDatabase.dao.ComputerDAO;
 import com.excilys.computerDatabase.dao.LogDAO;
 import com.excilys.computerDatabase.jdbc.ComputerDatabase;
 
-public enum ComputerService {
-	INSTANCE;
-	private static ComputerDAO computerDAO = ComputerDAO.INSTANCE;
-	private static ComputerDatabase cd = ComputerDatabase.INSTANCE;
+@Service
+public class ComputerService {
 	
-	private static LogDAO ldao = LogDAO.INSTANCE;
+	@Autowired
+	private ComputerDAO computerDAO;
+	
+	@Autowired
+	private ComputerDatabase cd;
+	
+	@Autowired
+	private LogDAO ldao;
 		
+	public ComputerService()
+	{
+			
+	}
 	
 	public ArrayList<Computer> getList(String search, String typeOrd, String ord, int page)
 	{
@@ -173,6 +186,18 @@ public enum ComputerService {
 			cd.closeConnection();
 		}
 		
+	}
+	
+	public void setComputerDAO(ComputerDAO computerDAO) {
+		this.computerDAO = computerDAO;
+	}
+
+	public void setCd(ComputerDatabase cd) {
+		this.cd = cd;
+	}
+
+	public void setLdao(LogDAO ldao) {
+		this.ldao = ldao;
 	}
 	
 }

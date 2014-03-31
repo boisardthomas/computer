@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.joda.time.LocalDate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.computerDatabase.bean.Company;
 import com.excilys.computerDatabase.bean.Computer;
@@ -25,7 +28,12 @@ import com.excilys.computerDatabase.validator.Validator;
 @WebServlet("/UpdateComputer")
 public class UpdateComputer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	
+	@Autowired
+	private CompanyService cs;
+	@Autowired
+	private ComputerService cpts;	
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -40,11 +48,9 @@ public class UpdateComputer extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		int id = Integer.parseInt(req.getParameter("id"));
 				
-		CompanyService companyService = CompanyService.INSTANCE;
-		ComputerService cs = ComputerService.INSTANCE;
-		ArrayList<Company> companyArray = companyService.getListCompany();
+		ArrayList<Company> companyArray = cs.getListCompany();
 		
-		Computer computer = cs.getComputer(id);
+		Computer computer = cpts.getComputer(id);
 		
 		req.setAttribute("companies", companyArray);
 		req.setAttribute("computer", computer);
@@ -55,9 +61,7 @@ public class UpdateComputer extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		ComputerService cs = ComputerService.INSTANCE; 
-		CompanyService companyService = CompanyService.INSTANCE;
-		
+				
 		int id = Integer.parseInt(req.getParameter("id"));
 		String name =req.getParameter("name");
 		String sIntro = req.getParameter("introducedDate");
@@ -89,9 +93,9 @@ public class UpdateComputer extends HttpServlet {
 		
 		if(v1 == false || v2 == false || v3 == false || v4 == false)
 		{
-			ArrayList<Company> companyArray = companyService.getListCompany();
+			ArrayList<Company> companyArray = cs.getListCompany();
 			
-			Computer computer = cs.getComputer(id);
+			Computer computer = cpts.getComputer(id);
 			
 			req.setAttribute("companies", companyArray);
 			req.setAttribute("computer", computer);
@@ -110,10 +114,16 @@ public class UpdateComputer extends HttpServlet {
 			else
 				disc  = LocalDate.parse(sDisc);
 			
-			cs.updateComputer(id,name, intro, disc, id_comp);
+			cpts.updateComputer(id,name, intro, disc, id_comp);
 			
 			req.getRequestDispatcher("/WEB-INF/index.jsp").forward(req, resp);
 		}
 	}
 
+	public void init(ServletConfig config) throws ServletException {
+	    super.init(config);
+	    SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
+	      getServletContext());
+	}
+	
 }

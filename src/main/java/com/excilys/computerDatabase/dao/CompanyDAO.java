@@ -6,16 +6,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import com.excilys.computerDatabase.bean.Company;
 import com.excilys.computerDatabase.jdbc.ComputerDatabase;
 
-import org.slf4j.*;
-
-public enum CompanyDAO {
-
-	INSTANCE;
+@Repository
+public class CompanyDAO {
 	
 	private static Logger log = LoggerFactory.getLogger(CompanyDAO.class);
+	
+	@Autowired
+	private ComputerDatabase computerDatabase;
 	
 	public ArrayList<Company> getListCompany(Connection cndb) throws SQLException
 	{
@@ -27,7 +32,7 @@ public enum CompanyDAO {
 		PreparedStatement st = null;
 		ResultSet rs = null;		
 		
-		cn = ComputerDatabase.INSTANCE.getConnection();
+		cn = computerDatabase.getConnection();
 					
 		String req = "select * from company;";
 			
@@ -58,7 +63,7 @@ public enum CompanyDAO {
 		PreparedStatement st = null;
 		ResultSet rs = null;	
 		
-		cn = ComputerDatabase.INSTANCE.getConnection();
+		cn = computerDatabase.getConnection();
 		
 		String req = "select * from company where id="+l;
 		
@@ -76,5 +81,11 @@ public enum CompanyDAO {
 		
 		return cpn;
 	}
+
+	public void setComputerDatabase(ComputerDatabase computerDatabase) {
+		this.computerDatabase = computerDatabase;
+	}
+	
+	
 	
 }

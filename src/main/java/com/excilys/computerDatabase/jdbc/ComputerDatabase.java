@@ -3,12 +3,13 @@ package com.excilys.computerDatabase.jdbc;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import org.springframework.stereotype.Component;
+
 import com.jolbox.bonecp.BoneCP;
 import com.jolbox.bonecp.BoneCPConfig;
 
-public enum ComputerDatabase {
-
-	INSTANCE;
+@Component
+public class ComputerDatabase {
 	
 	private BoneCPConfig config = new BoneCPConfig();
 	private BoneCP connectionPool;
