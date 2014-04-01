@@ -1,4 +1,4 @@
-package com.excilys.computerDatabase.servlet;
+package com.excilys.computerDatabase.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -6,12 +6,15 @@ import java.util.Map;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.computerDatabase.bean.Company;
@@ -20,30 +23,28 @@ import com.excilys.computerDatabase.service.CompanyService;
 import com.excilys.computerDatabase.service.ComputerService;
 import com.excilys.computerDatabase.validator.Validator;
 
-public class AddComputer extends HttpServlet{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+@Controller
+@RequestMapping("/addComputer")
+public class AddComputer {
 			
 	@Autowired
 	private CompanyService cs;
 	@Autowired
 	private ComputerService cpts;	
 	
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+	@RequestMapping(method = RequestMethod.GET)
+	protected String getAddComputer(ModelMap map)
 			throws ServletException, IOException {
 		
 		ArrayList<Company> companyArray = cs.getListCompany();
 		
-		req.setAttribute("companies", companyArray);		
+		map.addAttribute("companies", companyArray);		
 		
-		req.getRequestDispatcher("/WEB-INF/addComputer.jsp").forward(req, resp);
+		return "addComputer";
 	}
 	
-	@Override
+	@RequestMapping(method = RequestMethod.POST)
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 			
@@ -112,10 +113,4 @@ public class AddComputer extends HttpServlet{
 		
 	}
 
-	public void init(ServletConfig config) throws ServletException {
-	    super.init(config);
-	    SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
-	      getServletContext());
-	}
-	
 }

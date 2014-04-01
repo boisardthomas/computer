@@ -9,7 +9,7 @@
   <url>http://maven.apache.org</url>
  
   <properties>
-  	<version-spring>4.0.2.RELEASE</version-spring>
+  	<version-spring>4.0.3.RELEASE</version-spring>
   </properties>	 
  
   <dependencies>
@@ -77,6 +77,17 @@
 			<artifactId>spring-web</artifactId>
 			<version>${version-spring}</version>
 		</dependency>
+	
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${version-spring}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${version-spring}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>
@@ -84,6 +95,7 @@
 			<version>2.3.1</version>
 			<scope>provided</scope>
 		</dependency>
+		
   </dependencies>
   <build>
     <finalName>computer-database</finalName>

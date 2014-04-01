@@ -1,19 +1,19 @@
-package com.excilys.computerDatabase.servlet;
+package com.excilys.computerDatabase.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.excilys.computerDatabase.bean.Company;
 import com.excilys.computerDatabase.bean.Computer;
@@ -25,7 +25,8 @@ import com.excilys.computerDatabase.validator.Validator;
 /**
  * Servlet implementation class UpdateComputer
  */
-@WebServlet("/UpdateComputer")
+@Controller
+@RequestMapping("/updateComputer")
 public class UpdateComputer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -34,17 +35,12 @@ public class UpdateComputer extends HttpServlet {
 	@Autowired
 	private ComputerService cpts;	
 	
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public UpdateComputer() {
+	public UpdateComputer() {
         super();
         // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+	@RequestMapping(method = RequestMethod.GET) 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		int id = Integer.parseInt(req.getParameter("id"));
 				
@@ -57,9 +53,7 @@ public class UpdateComputer extends HttpServlet {
 		req.getRequestDispatcher("/WEB-INF/updateComputer.jsp").forward(req, resp);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+	@RequestMapping(method = RequestMethod.POST) 
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 				
 		int id = Integer.parseInt(req.getParameter("id"));
@@ -118,12 +112,6 @@ public class UpdateComputer extends HttpServlet {
 			
 			req.getRequestDispatcher("/WEB-INF/index.jsp").forward(req, resp);
 		}
-	}
-
-	public void init(ServletConfig config) throws ServletException {
-	    super.init(config);
-	    SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
-	      getServletContext());
 	}
 	
 }

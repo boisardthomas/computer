@@ -17,7 +17,7 @@
 				value="Filter by name"
 				class="btn btn-primary">
 		</form>
-		<a class="btn btn-success" id="add" href="addComputer?page=${param.page}&search=${param.search}&typeOrd=${param.typeOrd}&ord=${param.ord}">Add Computer</a>
+		<a class="btn btn-success" id="add" href="addComputer">Add Computer</a>
 	</div>
 
 		<pagi:pagination/>
@@ -46,7 +46,7 @@
 						<td><c:out value="${comp.company}"></c:out></td>
 						<td>
 							<a class="btn btn-success" id="add" href="updateComputer?id=${comp.id}&page=${param.page}&search=${param.search}&typeOrd=${param.typeOrd}&ord=${param.ord}">Update</a>
-							<a class="btn btn-danger" id="add" href="deleteComputer?id=${comp.id}" onclick="return confirm('Are you sure?')">Delete</a>
+							<a class="btn btn-danger" id="del" href="deleteComputer?id=${comp.id}" onclick="return confirm('Are you sure?')">Delete</a>
 						</td>
 					</tr>
 				</c:forEach>
