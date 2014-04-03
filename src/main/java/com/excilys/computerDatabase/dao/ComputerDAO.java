@@ -142,7 +142,7 @@ public class ComputerDAO {
 
 		cn = computerDatabase.getConnection();
 
-		String req = "select cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cpny.name from computer as cpt left outer join company as cpny on cpt.company_id=cpny.id where cpt.id=?;";
+		String req = "select cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cpny.id from computer as cpt left outer join company as cpny on cpt.company_id=cpny.id where cpt.id=?;";
 
 		st = cn.prepareStatement(req);
 		st.setInt(1, id);
@@ -163,7 +163,7 @@ public class ComputerDAO {
 					.name(rs.getString(2))
 					.introduced(localIntro)
 					.discontinued(localDisc)
-					.company(rs.getString(5))
+					.id_company(rs.getLong(5))
 					.build();
  
 		}
@@ -217,7 +217,7 @@ public class ComputerDAO {
 		return key;
 	}
 
-	public void updateComputer(int id, String name,
+	public void updateComputer(Long id, String name,
 			LocalDate intro, LocalDate disc, int company_id) throws SQLException {
 		log.info("Start updating computer");
 
@@ -239,7 +239,7 @@ public class ComputerDAO {
 		} else {
 			st.setNull(4, Types.INTEGER);
 		}
-		st.setInt(5, id);
+		st.setLong(5, id);
 
 		st.executeUpdate();
 

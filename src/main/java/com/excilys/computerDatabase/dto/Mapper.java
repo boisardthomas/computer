@@ -1,40 +1,22 @@
 package com.excilys.computerDatabase.dto;
 
-import org.joda.time.LocalDate;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 
 import com.excilys.computerDatabase.bean.Computer;
-import com.excilys.computerDatabase.service.CompanyService;
 
 public class Mapper {
 
-	public static Computer convertToComputer(ComputerDTO cdto)
-	{
-		ApplicationContext context = new ClassPathXmlApplicationContext("application-Context.xml");
-		CompanyService cs = context.getBean(CompanyService.class);
 	
-		try {
-			return Computer.builder().name(cdto.getNom())
-					.introduced(LocalDate.parse(cdto.getIntroduced()))
-					.discontinued(LocalDate.parse(cdto.getDiscontinued()))
-					.company(cs.getCompany(cdto.getCompany()).name)
-					.build();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return Computer.builder().name(cdto.getNom())
-					.introduced(new LocalDate(0))
-					.discontinued(new LocalDate(0))
-					.company(cdto.getCompany()+"")
-					.build();
-		}
-		finally
-		{
-			((ClassPathXmlApplicationContext)context).close();
-		}
+	
+	public static ComputerDTO convertToComputerDTO(Computer cdto)
+	{
+		Long id = cdto.getId();
+		String name = cdto.getName().toString();
+		String intro = (cdto.getIntroducedDate()!=null)?cdto.getIntroducedDate().toString():null;
+		String disc = (cdto.getDiscontinuedDate()!=null)?cdto.getDiscontinuedDate().toString():null;
+		Long id_comp = (cdto.getId_Company()!=null)?cdto.getId_Company():null;
+		return new ComputerDTO(id,name,intro,disc,id_comp);
 	
 	}
-	
 	
 }

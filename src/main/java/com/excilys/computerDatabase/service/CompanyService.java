@@ -34,7 +34,6 @@ public class CompanyService {
 		Connection cn = cd.getConnection();
 		
 		ArrayList<Company> companies= new ArrayList<>();
-		System.out.println(cdao);
 		try {
 			ldao.addLog("list all company", "select");
 			companies.addAll(cdao.getListCompany(cn));

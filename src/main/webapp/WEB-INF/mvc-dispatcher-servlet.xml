@@ -27,4 +27,21 @@
  
 	<mvc:annotation-driven />
  
+ 	<mvc:interceptors>
+ 		<bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+        	<property name="paramName" value="lang" />
+    	</bean>
+	</mvc:interceptors>
+    
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+        <property name="defaultLocale" value="en" />
+    </bean>
+
+    <!-- Message text files. This is set UTF-8 to display Arabic UTF correctly. -->    
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="messages" />        
+    </bean>
+	 
+	 
+ 
 </beans>

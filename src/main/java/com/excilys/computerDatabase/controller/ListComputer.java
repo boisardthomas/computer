@@ -28,12 +28,16 @@ public class ListComputer {
 	protected String getListComputer(ModelMap map, @RequestParam(value = "search",required = false) String search
 										, @RequestParam(value = "typeOrd",required = false) String typeOrd
 										, @RequestParam(value = "ord",required = false) String ord
-										, @RequestParam(value = "page",required = false) int page)										
+										, @RequestParam(value = "page",required = false) Integer page)										
 	{
 			ArrayList<Computer> computerArray;
 			int nbComputer;
-			if(page==0)
-				page = 1;
+			
+			if(page==null)
+			{
+				page=1;
+				
+			}
 			if(search!=null)
 			{
 				computerArray = cs.getList(search,typeOrd,ord,page);
@@ -44,12 +48,12 @@ public class ListComputer {
 				computerArray = cs.getList("",typeOrd,ord,page);
 				nbComputer = cs.nbComputer("");
 			}
-			
 			map.addAttribute("computerList", computerArray);
 			map.addAttribute("nbOfComputer", nbComputer);
+			map.addAttribute("page",page);
 								
 			return "dashboard";
-			
+	
 	}
 	
 	

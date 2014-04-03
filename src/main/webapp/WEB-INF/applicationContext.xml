@@ -15,6 +15,6 @@
 	<context:component-scan base-package="com.excilys.computerDatabase.dao" />
 	<context:component-scan base-package="com.excilys.computerDatabase.service" />
 	<context:component-scan base-package="com.excilys.computerDatabase.jdbc" />
-	
+	<context:component-scan base-package="com.excilys.computerDatabase.validator" />
 			
 </beans>

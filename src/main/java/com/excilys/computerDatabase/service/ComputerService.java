@@ -138,7 +138,7 @@ public class ComputerService {
 		
 	}
 	
-	public void updateComputer(int id, String name, LocalDate intro, LocalDate disc, int company_id)
+	public void updateComputer(Long id, String name, LocalDate intro, LocalDate disc, int company_id)
 	{
 		Connection cn = cd.getConnection();
 	

@@ -14,5 +14,7 @@
 	<header class="navbar navbar-default">
 		<h1>
 			<a href="ListComputer?page=1&search="> Application - Computer Database </a>
-		</h1>
+		</h1>		
 	</header>
+	&nbsp;&nbsp; Language : &nbsp;<a href=?lang=en>english</a>&nbsp;|&nbsp;<a href="?lang=fr">francais</a>
+	

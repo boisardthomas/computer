@@ -95,7 +95,7 @@ public class Computer {
 			return this;
 		}
 
-		public Builder company(Long id_company) {
+		public Builder id_company(Long id_company) {
 			this.computer.id_Company = id_company;
 			return this;
 		}		

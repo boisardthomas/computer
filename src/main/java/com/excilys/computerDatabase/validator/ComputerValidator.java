@@ -1,31 +1,18 @@
 package com.excilys.computerDatabase.validator;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.stereotype.Component;
+import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
+import org.springframework.validation.Validator;
 
 import com.excilys.computerDatabase.dto.ComputerDTO;
 
-public class Validator
+@Component
+public class ComputerValidator implements Validator
 {
-
-	private Map<String,Boolean> validation;
 	
 	private static final int[] jourDuMois = {31,28,31,30,31,30,31,31,30,31,30,31};	
-	
-	public Validator()
-	{
-		validation = new HashMap<>();
-	}
-	
-	public Map<String,Boolean> verification(ComputerDTO computer)
-	{
-		validation.put("name", nameValidation(computer.getNom()));
-		validation.put("introduction", dateValidation(computer.getIntroduced()));
-		validation.put("discontinued", dateValidation(computer.getDiscontinued()));
-		validation.put("discSupToIntro", discGreaterThanIntro(computer.getIntroduced(), computer.getDiscontinued()));
-		return validation;		
-	}
-	
+		
 	public boolean nameValidation(String name)
 	{
 		if(name.equals("") || name==null)
@@ -48,7 +35,7 @@ public class Validator
 			int annee = Integer.parseInt(tabDate[0]);
 			int mois = Integer.parseInt(tabDate[1]);
 			int jours = Integer.parseInt(tabDate[2]);
-			System.out.println(bissextile(annee));
+			
 			if(annee<1920 || annee > 2099)
 			{
 				System.out.println(1);
@@ -132,20 +119,43 @@ public class Validator
 				{
 					if(joursIntro>=joursDisc)
 						return false;
-					else
-						return true;
 				}
-				else
-					return true;
 			}
-			else
-				return true;
+			return true;
 
 		}
 		catch(NumberFormatException nfe)
 		{
 			return false;
 		}
+	}
+
+	@Override
+	public boolean supports(Class<?> clazz) {
+		return ComputerDTO.class.isAssignableFrom(clazz);
+	}
+
+	@Override
+	public void validate(Object target, Errors errors) {
+		ComputerDTO cdto = (ComputerDTO) target;
+		
+		ValidationUtils.rejectIfEmpty(errors, "name", "validator.name","Computer's name shouldn't be empty."); 
+		
+		if(!dateValidation(cdto.getIntroduced()))
+		{
+			errors.rejectValue("introduced", "validator.intro","Introduced date format invalid.");
+		}
+		
+		if(!dateValidation(cdto.getDiscontinued()))
+		{
+			errors.rejectValue("discontinued", "validator.disc","Discontinued date format is invalid.");
+		}
+		
+		if(!discGreaterThanIntro(cdto.getIntroduced(),cdto.getDiscontinued()))
+		{
+			errors.rejectValue("discontinued", "validator.discSupIntro","Discontinued should be greatter than introduced date.");
+		}
+				
 	}
 	
 }
