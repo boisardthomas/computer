@@ -7,10 +7,13 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 
+import javax.sql.DataSource;
+
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.computerDatabase.bean.Computer;
@@ -24,6 +27,9 @@ public class ComputerDAO {
 	@Autowired
 	private ComputerDatabase computerDatabase;
 
+	@Autowired
+	private DataSource ds;
+	
 	public ArrayList<Computer> getListComputer(String search,
 			String typeOrd, String ord, int page) throws SQLException {
 		ArrayList<Computer> computerArray = new ArrayList<>();
@@ -34,7 +40,7 @@ public class ComputerDAO {
 		ResultSet rs = null;
 		Connection cn = null;
 				
-		cn = computerDatabase.getConnection();
+		cn = DataSourceUtils.getConnection(ds);
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("select cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cpny.name from computer as cpt left outer join company as cpny on cpt.company_id=cpny.id where cpt.name like ? or cpny.name like ?");
@@ -109,7 +115,7 @@ public class ComputerDAO {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 
-		cn = computerDatabase.getConnection();
+		cn = DataSourceUtils.getConnection(ds);
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("select count(*) as nbComputer from computer as cpt left outer join company as cpny on cpt.company_id=cpny.id where cpt.name like ?");
@@ -140,7 +146,7 @@ public class ComputerDAO {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 
-		cn = computerDatabase.getConnection();
+		cn = DataSourceUtils.getConnection(ds);
 
 		String req = "select cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cpny.id from computer as cpt left outer join company as cpny on cpt.company_id=cpny.id where cpt.id=?;";
 
@@ -182,7 +188,7 @@ public class ComputerDAO {
 		Connection cn = null;
 		PreparedStatement st = null;
 
-		cn = computerDatabase.getConnection();
+		cn = DataSourceUtils.getConnection(ds);
 
 		String req = "insert into computer values(default,?,?,?,?)";
 
@@ -224,7 +230,7 @@ public class ComputerDAO {
 		Connection cn = null;
 		PreparedStatement st = null;
 
-		cn = computerDatabase.getConnection();
+		cn = DataSourceUtils.getConnection(ds);
 
 		String req = "update computer set name=?, introduced=?, discontinued=?, company_id=? where id =?;";
 
@@ -254,7 +260,7 @@ public class ComputerDAO {
 		Connection cn = null;
 		PreparedStatement st = null;
 
-		cn = computerDatabase.getConnection();
+		cn = DataSourceUtils.getConnection(ds);
 
 		String req = "delete from computer where id=?;";
 

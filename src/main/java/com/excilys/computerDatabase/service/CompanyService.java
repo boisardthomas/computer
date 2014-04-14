@@ -1,11 +1,11 @@
 package com.excilys.computerDatabase.service;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.computerDatabase.bean.Company;
 import com.excilys.computerDatabase.dao.CompanyDAO;
@@ -20,45 +20,31 @@ public class CompanyService {
 	
 	@Autowired
 	private LogDAO ldao;
-	
-	@Autowired
-	private ComputerDatabase cd;
-	
+			
 	public CompanyService()
 	{
 		
 	}
 	
+	@Transactional
 	public ArrayList<Company> getListCompany()
 	{
-		Connection cn = cd.getConnection();
-		
 		ArrayList<Company> companies= new ArrayList<>();
+		
 		try {
 			ldao.addLog("list all company", "select");
-			companies.addAll(cdao.getListCompany(cn));
-			cn.commit();
+			companies.addAll(cdao.getListCompany());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			try {
-				cn.rollback();
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 		}
-		finally
-		{
-			cd.closeConnection();
-		}
-		
+			
 		return companies;
 	}	
 	
+	@Transactional
 	public Company getCompany(long l)
 	{
-		cd.getConnection();
 		Company cpn = null;
 		
 		try {
@@ -67,11 +53,7 @@ public class CompanyService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		finally
-		{
-			cd.closeConnection();
-		}
-		
+			
 		return cpn;
 	}
 	
@@ -81,10 +63,6 @@ public class CompanyService {
 
 	public void setLdao(LogDAO ldao) {
 		this.ldao = ldao;
-	}
-
-	public void setCd(ComputerDatabase cd) {
-		this.cd = cd;
 	}
 		
 }

@@ -1,5 +1,10 @@
 package com.excilys.computerDatabase.validator;
 
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
@@ -11,8 +16,14 @@ import com.excilys.computerDatabase.dto.ComputerDTO;
 public class ComputerValidator implements Validator
 {
 	
-	private static final int[] jourDuMois = {31,28,31,30,31,30,31,31,30,31,30,31};	
-		
+	@Bean(name = "messageSource")
+	public ResourceBundleMessageSource messageSource()
+	{
+		ResourceBundleMessageSource bean = new ResourceBundleMessageSource();
+	    bean.setBasename("messages");
+	    return bean;
+	}	
+	
 	public boolean nameValidation(String name)
 	{
 		if(name.equals("") || name==null)
@@ -25,58 +36,20 @@ public class ComputerValidator implements Validator
 		if(date==null || date.equals(""))
 			return true;
 		
-		String[] tabDate = date.split("-");
+		String pattern = messageSource().getMessage("validator.date", null,LocaleContextHolder.getLocale());
 		
-		if(tabDate.length!=3)
-			return false;
+		DateTimeFormatter dtf = DateTimeFormat.forPattern(pattern);
 		
 		try
 		{
-			int annee = Integer.parseInt(tabDate[0]);
-			int mois = Integer.parseInt(tabDate[1]);
-			int jours = Integer.parseInt(tabDate[2]);
-			
-			if(annee<1920 || annee > 2099)
-			{
-				System.out.println(1);
-				return false;
-			}
-			
-			if(mois<1 || mois>12)
-			{
-				System.out.println(2);
-				return false;
-			}
-						
-			if((jours<1 || jours>jourDuMois[mois-1]))
-			{
-				if(mois!=2)
-				{
-					System.out.println(3);
-					return false;
-				}
-				else
-				{
-					if(bissextile(annee) && jours>29)
-					{
-						System.out.println(4);
-						return false;
-					}
-					else if(!bissextile(annee) && jours>28)
-					{
-						System.out.println(5);
-						return false;
-					}
-						
-				}
-			}
-			
-			return true;
+			dtf.parseLocalDate(date).toString("yyyy-MM-dd"); 
 		}
-		catch(NumberFormatException nfe)
+		catch(Exception e)
 		{
 			return false;
 		}
+		
+		return true;
 	}
 	
 	public boolean bissextile(int annee)
@@ -88,13 +61,19 @@ public class ComputerValidator implements Validator
 		return false;
 	}
 	
-	public boolean discGreaterThanIntro(String intro, String disc)
+	public boolean discGreaterThanIntro(String pIntro, String pDisc)
 	{
-		if(intro==null || intro.equals("") || disc==null || disc.equals(""))
+		if(pIntro==null || pIntro.equals("") || pDisc==null || pDisc.equals(""))
 			return true;
 			
-		if(!dateValidation(intro) || !dateValidation(disc))
+		if(!dateValidation(pIntro) || !dateValidation(pDisc))
 			return true;
+		
+		String pattern = messageSource().getMessage("validator.date", null,LocaleContextHolder.getLocale());
+		
+		DateTimeFormatter dtf = DateTimeFormat.forPattern(pattern);
+		String intro = dtf.parseLocalDate(pIntro).toString("yyyy-MM-dd");
+		String disc = dtf.parseLocalDate(pDisc).toString("yyyy-MM-dd");
 		
 		String[] tabDateIntro = intro.split("-");
 		String[] tabDateDisc = disc.split("-");
@@ -140,6 +119,7 @@ public class ComputerValidator implements Validator
 		ComputerDTO cdto = (ComputerDTO) target;
 		
 		ValidationUtils.rejectIfEmpty(errors, "name", "validator.name","Computer's name shouldn't be empty."); 
+		
 		
 		if(!dateValidation(cdto.getIntroduced()))
 		{

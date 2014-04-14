@@ -4,11 +4,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.validation.Valid;
 
 import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -28,13 +32,10 @@ import com.excilys.computerDatabase.service.CompanyService;
 import com.excilys.computerDatabase.service.ComputerService;
 import com.excilys.computerDatabase.validator.ComputerValidator;
 
-/**
- * Servlet implementation class UpdateComputer
- */
+
 @Controller
 @RequestMapping("/updateComputer")
 public class UpdateComputer{
-	private static final long serialVersionUID = 1L;
 	
 	@Autowired
 	private CompanyService cs;
@@ -45,12 +46,23 @@ public class UpdateComputer{
 	@Autowired
 	private ComputerValidator computerValidator;
 	
+	@Autowired
+	private Mapper Mapper;
+		
 	@InitBinder
 	private void initBinder(WebDataBinder binder)
 	{
 		binder.setValidator(computerValidator);
 	}
 
+	@Bean(name = "messageSource")
+	public ResourceBundleMessageSource messageSource()
+	{
+		ResourceBundleMessageSource bean = new ResourceBundleMessageSource();
+	    bean.setBasename("messages");
+	    return bean;
+	}	
+	
 	@RequestMapping(method = RequestMethod.GET) 
 	protected ModelAndView getUpdateComputer(ModelMap map, @RequestParam("id") int id)
 			throws ServletException, IOException {
@@ -82,6 +94,10 @@ public class UpdateComputer{
 			return mav;
 		}
 		
+		String pattern = messageSource().getMessage("validator.date", null,LocaleContextHolder.getLocale());
+		
+		DateTimeFormatter dtf = DateTimeFormat.forPattern(pattern);
+		
 		Long id = cdto.getId();
 		String name = cdto.getName();
 		String sIntro = cdto.getIntroduced();
@@ -104,12 +120,12 @@ public class UpdateComputer{
 		if(sIntro==null || sIntro.equals(""))
 			intro = new LocalDate(0);
 		else
-			intro = LocalDate.parse(sIntro);
+			intro = dtf.parseLocalDate(cdto.getIntroduced());
 		
 		if(sDisc==null || sDisc.equals(""))
 			disc = new LocalDate(0);
 		else
-			disc  = LocalDate.parse(sDisc);
+			disc  = dtf.parseLocalDate(cdto.getDiscontinued()); 
 		
 		cpts.updateComputer(id,name, intro, disc, id_comp);
 		

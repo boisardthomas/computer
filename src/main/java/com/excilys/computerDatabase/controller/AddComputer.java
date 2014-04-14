@@ -5,7 +5,12 @@ import java.util.ArrayList;
 import javax.validation.Valid;
 
 import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -54,6 +59,14 @@ public class AddComputer {
 		return mav;
 	}
 	
+	@Bean(name = "messageSource")
+	public ResourceBundleMessageSource messageSource()
+	{
+		ResourceBundleMessageSource bean = new ResourceBundleMessageSource();
+	    bean.setBasename("messages");
+	    return bean;
+	}	
+	
 	@RequestMapping(method = RequestMethod.POST)
 	protected ModelAndView creatNewComputer(@ModelAttribute @Valid ComputerDTO cdto,
 			BindingResult result,
@@ -70,6 +83,10 @@ public class AddComputer {
 			return mav;
 		}
 						
+		String pattern = messageSource().getMessage("validator.date", null,LocaleContextHolder.getLocale());
+		
+		DateTimeFormatter dtf = DateTimeFormat.forPattern(pattern);
+		
 		String name = cdto.getName();
 		String sIntro = cdto.getIntroduced();
 		String sDisc = cdto.getDiscontinued();
@@ -91,12 +108,12 @@ public class AddComputer {
 		if(sIntro==null || sIntro.equals(""))
 			intro = new LocalDate(0);
 		else
-			intro = LocalDate.parse(sIntro);
+			intro = dtf.parseLocalDate(cdto.getIntroduced());
 			
 		if(sDisc==null || sDisc.equals(""))
 			disc = new LocalDate(0);
 		else
-			disc  = LocalDate.parse(sDisc);
+			disc  = dtf.parseLocalDate(cdto.getDiscontinued()); 
 			
 		cpts.addComputer(name, intro, disc, id_comp);
 			

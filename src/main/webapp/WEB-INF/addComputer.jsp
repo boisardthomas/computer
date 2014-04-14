@@ -16,18 +16,18 @@
 					<span class="label label-warning"><form:errors path="name" cssClath="label label-warning"></form:errors></span>
 				</div>
 			</div>
-			
+			<spring:message code="validator.dateFormat" var="dateFormat" />
 			<div class="form-group">
 				<label class="col-sm-2 control-label" for="introduced"><spring:message code="label.intro"></spring:message></label>
 				<div class="col-sm-6">
-					<form:input class="form-control" type="date" path="introduced" pattern="\d{4}-\d{2}-\d{2}"/>
+					<form:input class="form-control" type="date" path="introduced" pattern="${dateFormat}"/>
 					<span class="label label-warning"><form:errors path="introduced" cssClath="label label-warning"></form:errors></span>
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="col-sm-2 control-label" for="discontinued"><spring:message code="label.disc"></spring:message></label>
 				<div class="col-sm-6">
-					<form:input class="form-control" type="date" path="discontinued" value="${computerDTO.discontinued}" pattern="\d{4}-\d{2}-\d{2}" />
+					<form:input class="form-control" type="date" path="discontinued" value="${computerDTO.discontinued}" pattern="${dateFormat}" />
 					<span class="label label-warning"><form:errors path="discontinued" cssClath="label label-warning"></form:errors></span>
 				</div>
 			</div>

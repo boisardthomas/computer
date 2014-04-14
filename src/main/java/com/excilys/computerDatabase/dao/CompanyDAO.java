@@ -6,9 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.sql.DataSource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.computerDatabase.bean.Company;
@@ -22,7 +25,10 @@ public class CompanyDAO {
 	@Autowired
 	private ComputerDatabase computerDatabase;
 	
-	public ArrayList<Company> getListCompany(Connection cndb) throws SQLException
+	@Autowired
+	private DataSource ds;
+	
+	public ArrayList<Company> getListCompany() throws SQLException
 	{
 		log.info("start search for company");
 		
@@ -32,7 +38,7 @@ public class CompanyDAO {
 		PreparedStatement st = null;
 		ResultSet rs = null;		
 		
-		cn = computerDatabase.getConnection();
+		cn = DataSourceUtils.getConnection(ds);
 					
 		String req = "select * from company;";
 			
@@ -63,7 +69,7 @@ public class CompanyDAO {
 		PreparedStatement st = null;
 		ResultSet rs = null;	
 		
-		cn = computerDatabase.getConnection();
+		cn = DataSourceUtils.getConnection(ds);
 		
 		String req = "select * from company where id="+l;
 		
