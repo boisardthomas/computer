@@ -37,7 +37,7 @@
         <property name="defaultLocale" value="en" />
     </bean>
 
-    <!-- Message text files. This is set UTF-8 to display Arabic UTF correctly. -->    
+    <!-- Message text files -->    
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basename" value="messages" />        
     </bean>

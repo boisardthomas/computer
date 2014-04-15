@@ -88,6 +88,12 @@
 			<artifactId>spring-core</artifactId>
 			<version>${version-spring}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>4.0.3.RELEASE</version>
+		</dependency>
 
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>
@@ -113,11 +119,7 @@
 			<artifactId>javax.transaction-api</artifactId>
 			<version>1.2</version>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-jdbc</artifactId>
-			<version>4.0.3.RELEASE</version>
-		</dependency>
+		
   </dependencies>
   <build>
     <finalName>computer-database</finalName>
