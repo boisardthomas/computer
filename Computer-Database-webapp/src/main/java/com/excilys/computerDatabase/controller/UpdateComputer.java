@@ -26,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.excilys.computerDatabase.bean.Company;
+import com.excilys.computerDatabase.bean.Computer;
 import com.excilys.computerDatabase.dto.ComputerDTO;
 import com.excilys.computerDatabase.dto.Mapper;
 import com.excilys.computerDatabase.service.CompanyService;
@@ -106,11 +107,11 @@ public class UpdateComputer{
 		LocalDate disc = null; 
 		String company = cdto.getCompany()+"";
 		
-		Integer id_comp = null;
+		Long id_comp = null;
 		
 		try
 		{
-			id_comp = Integer.parseInt(company);
+			id_comp = Long.parseLong(company);
 		}
 		catch(NumberFormatException e)
 		{
@@ -127,7 +128,8 @@ public class UpdateComputer{
 		else
 			disc  = dtf.parseLocalDate(cdto.getDiscontinued()); 
 		
-		cpts.updateComputer(id,name, intro, disc, id_comp);
+		Computer c = Computer.builder().id(id).name(name).introduced(intro).discontinued(disc).id_company(id_comp).build();	
+		cpts.updateComputer(c);
 		
 		mav.setViewName("redirect:/ListComputer?page=1");
 		

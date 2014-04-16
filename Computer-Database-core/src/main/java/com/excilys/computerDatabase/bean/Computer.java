@@ -1,5 +1,7 @@
 package com.excilys.computerDatabase.bean;
 
+
+
 import org.joda.time.LocalDate;
 
 public class Computer {

@@ -28,14 +28,17 @@ public class Mapper {
 		//String pattern = messageSource().getMessage("validator.date", null,LocaleContextHolder.getLocale());
 		String pattern = messageSource.getMessage("validator.date", null,LocaleContextHolder.getLocale());
 		
-		
-		Long id = cdto.getId();
-		String name = cdto.getName().toString();
-		String intro = (cdto.getIntroducedDate()!=null)?cdto.getIntroducedDate().toString(pattern):null;
-		String disc = (cdto.getDiscontinuedDate()!=null)?cdto.getDiscontinuedDate().toString(pattern):null;
-		Long id_comp = (cdto.getId_Company()!=null)?cdto.getId_Company():null;
-		return new ComputerDTO(id,name,intro,disc,id_comp);
-	
+		if(cdto!=null)
+		{
+			Long id = cdto.getId();
+			String name = cdto.getName().toString();
+			String intro = (cdto.getIntroducedDate()!=null)?cdto.getIntroducedDate().toString(pattern):null;
+			String disc = (cdto.getDiscontinuedDate()!=null)?cdto.getDiscontinuedDate().toString(pattern):null;
+			Long id_comp = (cdto.getId_Company()!=null)?cdto.getId_Company():null;
+			return new ComputerDTO(id,name,intro,disc,id_comp);
+		}
+		else
+			return null;
 	}
 	
 }

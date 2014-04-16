@@ -3,7 +3,6 @@ package com.excilys.computerDatabase.service;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,12 +76,12 @@ public class ComputerService {
 	}
 	
 	@Transactional
-	public void addComputer(String name, LocalDate intro, LocalDate disc, int company)
+	public void addComputer(Computer computer)
 	{
 		
 				
 		try {
-			Long key =computerDAO.addComputer(name, intro, disc, company);
+			Long key =computerDAO.addComputer(computer);
 			ldao.addLog("add computer where id =" + key , "insert");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -92,12 +91,12 @@ public class ComputerService {
 	}
 	
 	@Transactional
-	public void updateComputer(Long id, String name, LocalDate intro, LocalDate disc, int company_id)
+	public void updateComputer(Computer c)
 	{
 		
 		try {
-			ldao.addLog("update computer where id="+id, "update");
-			computerDAO.updateComputer(id, name, intro, disc, company_id);
+			ldao.addLog("update computer where id="+c.getId(), "update");
+			computerDAO.updateComputer(c);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

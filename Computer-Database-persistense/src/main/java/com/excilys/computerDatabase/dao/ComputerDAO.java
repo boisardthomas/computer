@@ -10,7 +10,6 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,14 +93,18 @@ public class ComputerDAO {
 		Computer computer = null;
 		String req = "select cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cpny.id, cpny.name as cpny_name from computer as cpt left outer join company as cpny on cpt.company_id=cpny.id where cpt.id=?;";
 
-		computer = (Computer)jdbcTemplate.queryForObject(req, new Object[] { id }, new ComputerRowMapper());
+		List<Computer> computerArray = new ArrayList<>();
+		
+		computerArray = jdbcTemplate.query(req, new Object[] { id }, new ComputerRowMapper());
+		
+		if(!computerArray.isEmpty())
+			computer = computerArray.get(0);
 		
 		log.info("Getting the computer");
 		return computer;
 	}
 
-	public Long addComputer(final String name, final LocalDate intro,
-			final LocalDate disc, final int company) throws SQLException {
+	public Long addComputer(final Computer computer) throws SQLException {
 		log.info("Start inserting a new computer");
 
 		
@@ -115,11 +118,11 @@ public class ComputerDAO {
 		     public PreparedStatement createPreparedStatement(Connection connection)
 		    		 throws SQLException {
 		    	 		PreparedStatement ps = connection.prepareStatement(req, Statement.RETURN_GENERATED_KEYS);
-		    	 		ps.setString(1, name);
-		    	 		ps.setDate(2, new java.sql.Date(intro.toDate().getTime()));
-		    	 		ps.setDate(3, new java.sql.Date(disc.toDate().getTime()));
-		    	 		if (company > 0) {
-		    	 			ps.setInt(4, company);
+		    	 		ps.setString(1, computer.getName());
+		    	 		ps.setDate(2, new java.sql.Date(computer.getIntroducedDate().toDate().getTime()));
+		    	 		ps.setDate(3, new java.sql.Date(computer.getDiscontinuedDate().toDate().getTime()));
+		    	 		if (computer.getId_Company() > 0) {
+		    	 			ps.setLong(4, computer.getId_Company());
 		    	 		} else {
 		    	 			ps.setNull(4, Types.INTEGER);
 		    	 		}
@@ -136,18 +139,17 @@ public class ComputerDAO {
 				
 	}
 
-	public void updateComputer(Long id, String name,
-			LocalDate intro, LocalDate disc, Integer company_id) throws SQLException {
+	public void updateComputer(Computer computer) throws SQLException {
 		log.info("Start updating computer");
-		
+		Long company_id = computer.getId_Company();
 		if(company_id==0)
 			company_id=null;
 		
 		String req = "update computer set name=?, introduced=?, discontinued=?, company_id=? where id =?;";
 		
-		Object[] params = {name, new java.sql.Date(intro.toDate().getTime()), new java.sql.Date(disc.toDate().getTime()), company_id, id};
+		Object[] params = {computer.getName(), new java.sql.Date(computer.getIntroducedDate().toDate().getTime()), new java.sql.Date(computer.getDiscontinuedDate().toDate().getTime()), company_id, computer.getId()};
 		
-		int[] params_type = {Types.VARCHAR, Types.DATE, Types.DATE, Types.INTEGER, Types.BIGINT};		
+		int[] params_type = {Types.VARCHAR, Types.DATE, Types.DATE, Types.BIGINT, Types.BIGINT};		
 		
 		jdbcTemplate.update(req, params, params_type);
 
