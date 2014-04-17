@@ -4,12 +4,8 @@ import java.util.ArrayList;
 
 import javax.validation.Valid;
 
-import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -23,8 +19,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.excilys.computerDatabase.bean.Company;
-import com.excilys.computerDatabase.bean.Computer;
 import com.excilys.computerDatabase.dto.ComputerDTO;
+import com.excilys.computerDatabase.dto.Mapper;
 import com.excilys.computerDatabase.service.CompanyService;
 import com.excilys.computerDatabase.service.ComputerService;
 import com.excilys.computerDatabase.validator.ComputerValidator;
@@ -41,6 +37,9 @@ public class AddComputer {
 	
 	@Autowired
 	private ComputerValidator computerValidator;
+	
+	@Autowired
+	private Mapper Mapper;
 	
 	@InitBinder
 	private void initBinder(WebDataBinder binder)
@@ -84,40 +83,7 @@ public class AddComputer {
 			return mav;
 		}
 						
-		String pattern = messageSource().getMessage("validator.date", null,LocaleContextHolder.getLocale());
-		
-		DateTimeFormatter dtf = DateTimeFormat.forPattern(pattern);
-		
-		String name = cdto.getName();
-		String sIntro = cdto.getIntroduced();
-		String sDisc = cdto.getDiscontinued();
-		LocalDate intro = null;
-		LocalDate disc = null; 
-		String company = cdto.getCompany()+"";
-		
-		Long id_comp = null;
-		
-		try
-		{
-			id_comp = Long.parseLong(company);
-		}
-		catch(NumberFormatException e)
-		{
-			e.printStackTrace();
-		}
-								
-		if(sIntro==null || sIntro.equals(""))
-			intro = new LocalDate(0);
-		else
-			intro = dtf.parseLocalDate(cdto.getIntroduced());
-			
-		if(sDisc==null || sDisc.equals(""))
-			disc = new LocalDate(0);
-		else
-			disc  = dtf.parseLocalDate(cdto.getDiscontinued()); 
-	
-		Computer c = Computer.builder().name(name).introduced(intro).discontinued(disc).id_company(id_comp).build();	
-		cpts.addComputer(c);
+		cpts.addComputer(Mapper.convertToComputer(cdto));
 			
 		int page = (int)(Math.ceil(cpts.nbComputer("")/15.0));
 		

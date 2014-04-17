@@ -6,12 +6,9 @@ import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.validation.Valid;
 
-import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -95,40 +92,8 @@ public class UpdateComputer{
 			return mav;
 		}
 		
-		String pattern = messageSource().getMessage("validator.date", null,LocaleContextHolder.getLocale());
+		Computer c = Mapper.convertToComputer(cdto);
 		
-		DateTimeFormatter dtf = DateTimeFormat.forPattern(pattern);
-		
-		Long id = cdto.getId();
-		String name = cdto.getName();
-		String sIntro = cdto.getIntroduced();
-		String sDisc = cdto.getDiscontinued();
-		LocalDate intro = null;
-		LocalDate disc = null; 
-		String company = cdto.getCompany()+"";
-		
-		Long id_comp = null;
-		
-		try
-		{
-			id_comp = Long.parseLong(company);
-		}
-		catch(NumberFormatException e)
-		{
-			e.printStackTrace();
-		}
-		
-		if(sIntro==null || sIntro.equals(""))
-			intro = new LocalDate(0);
-		else
-			intro = dtf.parseLocalDate(cdto.getIntroduced());
-		
-		if(sDisc==null || sDisc.equals(""))
-			disc = new LocalDate(0);
-		else
-			disc  = dtf.parseLocalDate(cdto.getDiscontinued()); 
-		
-		Computer c = Computer.builder().id(id).name(name).introduced(intro).discontinued(disc).id_company(id_comp).build();	
 		cpts.updateComputer(c);
 		
 		mav.setViewName("redirect:/ListComputer?page=1");

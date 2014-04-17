@@ -26,22 +26,21 @@ public class Computer {
 	@Column(name="discontinued")
 	private LocalDate discontinuedDate;
 	@Column(name="company_id")
-	private Long id_Company;
-	private String Company;
+	private Company company;
 
 	public Computer()
 	{
-		
+		company=new Company();
 	}
 	
 	public Computer(Long id, String name, LocalDate introducedDate,
-			LocalDate discontinuedDate, String company) {
+			LocalDate discontinuedDate, Company company) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.introducedDate = introducedDate;
 		this.discontinuedDate = discontinuedDate;
-		Company = company;
+		this.company = company;
 	}
 
 	public Long getId() {
@@ -52,7 +51,7 @@ public class Computer {
 	public String toString() {
 		return "Computer [id=" + id + ", name=" + name + ", introducedDate="
 				+ introducedDate + ", discontinuedDate=" + discontinuedDate
-				+ ", id_Company=" + id_Company + ", Company=" + Company + "]";
+				+ ", Company=" + company + "]";
 	}
 
 	public void setId(Long id) {
@@ -84,11 +83,11 @@ public class Computer {
 	}
 
 	public String getCompany() {
-		return Company;
+		return company.getName();
 	}
 
-	public void setCompany(String company) {
-		Company = company;
+	public void setCompany(String comp) {
+		company.setName(comp);
 	}
 
 	public static class Builder {
@@ -121,12 +120,12 @@ public class Computer {
 		}
 
 		public Builder id_company(Long id_company) {
-			this.computer.id_Company = id_company;
+			this.computer.company.setId(id_company);
 			return this;
 		}		
 		
 		public Builder company(String company) {
-			this.computer.Company = company;
+			this.computer.company.setName(company);
 			return this;
 		}
 
@@ -137,11 +136,11 @@ public class Computer {
 	}
 
 	public Long getId_Company() {
-		return id_Company;
+		return company.getId();
 	}
 
 	public void setId_Company(Long id_Company) {
-		this.id_Company = id_Company;
+		this.company.setId(id_Company);
 	}
 
 	public static Builder builder() {
