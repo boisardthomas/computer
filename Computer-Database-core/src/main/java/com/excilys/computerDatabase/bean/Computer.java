@@ -2,14 +2,30 @@ package com.excilys.computerDatabase.bean;
 
 
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import org.joda.time.LocalDate;
 
+@Entity
+@Table(name="computer")
 public class Computer {
 
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="id")
 	private Long id;
+	@Column(name="name")
 	private String name;
+	@Column(name="introduced")
 	private LocalDate introducedDate;
+	@Column(name="discontinued")
 	private LocalDate discontinuedDate;
+	@Column(name="company_id")
 	private Long id_Company;
 	private String Company;
 

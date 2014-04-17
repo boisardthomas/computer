@@ -6,15 +6,7 @@
 	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 	http://www.springframework.org/schema/context 
 	http://www.springframework.org/schema/context/spring-context-4.0.xsd">
-
-	<!-- ANNOTATIONS POUR L'INJECTION DE DEPENDANCES -->
-	<context:annotation-config />
+	
 		
-	<import resource="classpath:/datasource.xml" />	
-  	<import resource="classpath:/Spring-core.xml" />
-  	<import resource="classpath:/Spring-service.xml" />
-  	<import resource="classpath:/Spring-persistense.xml" />
-  	<import resource="classpath:/Spring-binding.xml" />
-  	
-  	  		
+	
 </beans>

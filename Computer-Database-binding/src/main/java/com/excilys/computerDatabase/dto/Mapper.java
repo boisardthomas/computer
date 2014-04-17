@@ -5,19 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
-
 import com.excilys.computerDatabase.bean.Computer;
 
 @Component
 public class Mapper {
-
-	/*@Bean(name = "messageSource")
-	public ResourceBundleMessageSource messageSource()
-	{
-		ResourceBundleMessageSource bean = new ResourceBundleMessageSource();
-	    bean.setBasename("messages");
-	    return bean;
-	}	*/
 
 	@Autowired
 	private ResourceBundleMessageSource messageSource;

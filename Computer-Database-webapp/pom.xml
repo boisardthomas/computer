@@ -9,9 +9,8 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<groupId>excilys</groupId>
+
 	<artifactId>Computer-Database-webapp</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 
 	<packaging>war</packaging>
 
@@ -19,25 +18,34 @@
 	<url>http://maven.apache.org</url>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+		</dependency>
+
+
 		<dependency>
 			<groupId>jstl</groupId>
 			<artifactId>jstl</artifactId>
-			<version>1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
-			<version>3.1.0</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>
 			<artifactId>javax.servlet.jsp-api</artifactId>
-			<version>2.3.1</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>Computer-Database-core</artifactId>
@@ -53,7 +61,7 @@
 			<artifactId>Computer-Database-binding</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-	
+		
 	</dependencies>
 
 	<build>
