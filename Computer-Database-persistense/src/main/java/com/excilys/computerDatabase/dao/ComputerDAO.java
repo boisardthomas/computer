@@ -5,12 +5,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Query;
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.computerDatabase.bean.Computer;
@@ -19,9 +22,6 @@ import com.excilys.computerDatabase.bean.Computer;
 public class ComputerDAO {
 	
 	private Logger log = LoggerFactory.getLogger(ComputerDAO.class);
-		
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
 	
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -32,40 +32,43 @@ public class ComputerDAO {
 
 		log.info("Start search for computer");
 
-		StringBuilder sb = new StringBuilder();
-		sb.append("select computer from Computer computer left join  computer.company company where computer.name like :searchString");
-		sb.append(" or company.name like :searchString");
+		Criteria cr = sessionFactory.getCurrentSession().createCriteria(Computer.class);
+		cr.createAlias("company", "company", JoinType.LEFT_OUTER_JOIN);
+		cr.add(Restrictions.or(Restrictions.like("name", "%"+search+"%"),
+				Restrictions.like("company.name", "%"+search+"%")));
 		
 		if (typeOrd != null && !typeOrd.equals("") && ord != null	&& !ord.equals("")) {
-			sb.append(" order by ");
 			ord = (ord.equals("asc") || ord.equals("desc"))?ord:"asc";
+			String selectColOrd;
 			switch (typeOrd) {
 				case "comp_name":
-					sb.append("computer.name");
+					selectColOrd = "name";
 					break;
 				case "comp_intro":
-					sb.append("computer.introducedDate");
+					selectColOrd = "introducedDate";
 					break;
 				case "comp_disc":
-					sb.append("computer.discontinuedDate");
+					selectColOrd = "discontinuedDate";
 					break;
 				case "cpny_name":
-					sb.append("company.name");
+					selectColOrd = "company.name";
 					break;
 				default:
-					sb.append("computer.id");
+					selectColOrd = "id";
 					break;
 			}
-			sb.append(",computer.name ");
-			sb.append(ord);
+			if(ord.equals("asc"))
+				cr.addOrder(Order.asc(selectColOrd));
+			else
+				cr.addOrder(Order.desc(selectColOrd));
+			cr.addOrder(Order.asc("name"));
 		}
-
-		Query query = sessionFactory.getCurrentSession().createQuery(sb.toString());
-		query.setParameter("searchString","%" +search + "%");
-		query.setFirstResult((page - 1) * 15);
-		query.setMaxResults(15);
-		computerArray = query.list();
-	
+		
+		cr.setFirstResult((page - 1) * 15);
+		cr.setMaxResults(15);
+		
+		computerArray = cr.list();
+		
 		log.info("End of search for computer");
 		return computerArray;
 	}
@@ -73,11 +76,14 @@ public class ComputerDAO {
 	public Long nbComputer(String search) throws SQLException {
 		Long nbComputer = 0L;
 
-		StringBuilder sb = new StringBuilder();
-		sb.append("select count(*) from Computer computer left join  computer.company company where computer.name like :searchString");
-		sb.append(" or company.name like :searchString");
+		Criteria cr = sessionFactory.getCurrentSession().createCriteria(Computer.class);
+		cr.createAlias("company", "company", JoinType.LEFT_OUTER_JOIN);
+		cr.add(Restrictions.or(Restrictions.like("name", "%"+search+"%"),
+				Restrictions.like("company.name", "%"+search+"%")));
+		cr.setProjection(Projections.rowCount());
 		
-		nbComputer = (Long)(sessionFactory.getCurrentSession().createQuery(sb.toString()).setParameter("searchString","%" +search + "%").uniqueResult());	
+		nbComputer = (Long) cr.list().get(0);
+		
 		log.info("Return number of computer");
 		return nbComputer;
 	}

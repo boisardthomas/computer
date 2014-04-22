@@ -24,7 +24,7 @@ public class CompanyDAO {
 		log.info("start search for company");
 		
 		@SuppressWarnings("unchecked")
-		List<Company> companyArray = sessionFactory.getCurrentSession().createQuery("from Company").list();
+		List<Company> companyArray = sessionFactory.getCurrentSession().createCriteria(Company.class).list();
 						
 		log.info("end of search for company");
 		
