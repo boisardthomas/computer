@@ -1,14 +1,16 @@
 package com.excilys.computerDatabase.bean;
 
-
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
 import org.joda.time.LocalDate;
 
 @Entity
@@ -21,16 +23,22 @@ public class Computer {
 	private Long id;
 	@Column(name="name")
 	private String name;
+	
 	@Column(name="introduced")
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
 	private LocalDate introducedDate;
+	
 	@Column(name="discontinued")
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
 	private LocalDate discontinuedDate;
-	@Column(name="company_id")
+	
+	@ManyToOne
+	@JoinColumn(name="company_id")
 	private Company company;
 
 	public Computer()
 	{
-		company=new Company();
+		company=null;
 	}
 	
 	public Computer(Long id, String name, LocalDate introducedDate,
@@ -82,12 +90,12 @@ public class Computer {
 		this.discontinuedDate = discontinuedDate;
 	}
 
-	public String getCompany() {
-		return company.getName();
+	public Company getCompany() {
+		return company;
 	}
 
-	public void setCompany(String comp) {
-		company.setName(comp);
+	public void setCompany(Company comp) {
+		company = comp;
 	}
 
 	public static class Builder {
@@ -119,13 +127,9 @@ public class Computer {
 			return this;
 		}
 
-		public Builder id_company(Long id_company) {
-			this.computer.company.setId(id_company);
-			return this;
-		}		
-		
-		public Builder company(String company) {
-			this.computer.company.setName(company);
+		public Builder company(Company company) {
+			if(company!=null)
+				this.computer.company = company;
 			return this;
 		}
 
@@ -135,13 +139,6 @@ public class Computer {
 
 	}
 
-	public Long getId_Company() {
-		return company.getId();
-	}
-
-	public void setId_Company(Long id_Company) {
-		this.company.setId(id_Company);
-	}
 
 	public static Builder builder() {
 		return new Builder();

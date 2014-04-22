@@ -26,7 +26,7 @@ public class ListComputer {
 										, @RequestParam(value = "page",required = false) Integer page)										
 	{
 			ArrayList<Computer> computerArray;
-			int nbComputer;
+			Long nbComputer;
 			
 			if(page==null)
 			{

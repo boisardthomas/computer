@@ -48,7 +48,7 @@
 						<td><c:out value="${comp.name}"></c:out></td>
 						<td><c:out value="${comp.introducedDate}"></c:out></td>
 						<td><c:out value="${comp.discontinuedDate}"></c:out></td>
-						<td><c:out value="${comp.company}"></c:out></td>
+						<td><c:out value="${comp.company.name}"></c:out></td>
 						<td>
 							<a class="btn btn-success" id="add" href="updateComputer?id=${comp.id}&page=${page}&search=${param.search}&typeOrd=${param.typeOrd}&ord=${param.ord}"><spring:message code="label.update"></spring:message></a>
 							<a class="btn btn-danger" id="del" href="deleteComputer?id=${comp.id}" onclick="return confirm('Are you sure?')"><spring:message code="label.delete"></spring:message></a>

@@ -25,8 +25,7 @@ public class ComputerRowMapper implements RowMapper<Computer>{
 				.name(rs.getString(2))
 				.introduced(localIntro)
 				.discontinued(localDisc)
-				.id_company(rs.getLong(5))
-				.company(rs.getString(6))
+				.company(Company.builder().id(rs.getLong(5)).name(rs.getString(6)).build())
 				.build();
 		
 		

@@ -62,7 +62,7 @@ public class UpdateComputer{
 	}	
 	
 	@RequestMapping(method = RequestMethod.GET) 
-	protected ModelAndView getUpdateComputer(ModelMap map, @RequestParam("id") int id)
+	protected ModelAndView getUpdateComputer(ModelMap map, @RequestParam("id") long id)
 			throws ServletException, IOException {
 		ArrayList<Company> companyArray = cs.getListCompany();
 		

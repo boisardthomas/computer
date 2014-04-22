@@ -11,6 +11,7 @@
 	<context:annotation-config />
 		
 	<import resource="classpath:/datasource.xml" />	
+	<import resource="classpath:/hibernate.xml" />
   	<import resource="classpath:/Spring-core.xml" />
   	<import resource="classpath:/Spring-service.xml" />
   	<import resource="classpath:/Spring-persistense.xml" />

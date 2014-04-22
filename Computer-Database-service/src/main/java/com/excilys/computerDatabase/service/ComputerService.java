@@ -42,9 +42,9 @@ public class ComputerService {
 	}
 	
 	@Transactional
-	public int nbComputer(String search)
+	public Long nbComputer(String search)
 	{
-		int nbComputer =0;
+		Long nbComputer =0L;
 		
 		try {
 			nbComputer = computerDAO.nbComputer(search);
@@ -59,7 +59,7 @@ public class ComputerService {
 	}
 	
 	@Transactional
-	public Computer getComputer(int id)
+	public Computer getComputer(Long id)
 	{
 		Computer computer = null;
 		
