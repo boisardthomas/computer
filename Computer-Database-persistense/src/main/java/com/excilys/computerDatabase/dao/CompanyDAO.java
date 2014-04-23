@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.computerDatabase.bean.Company;
+import com.excilys.computerDatabase.bean.QCompany;
+import com.mysema.query.jpa.JPQLQuery;
+import com.mysema.query.jpa.hibernate.HibernateQuery;
 
 @Repository
 public class CompanyDAO {
@@ -23,9 +26,11 @@ public class CompanyDAO {
 	{
 		log.info("start search for company");
 		
-		@SuppressWarnings("unchecked")
-		List<Company> companyArray = sessionFactory.getCurrentSession().createCriteria(Company.class).list();
-						
+		JPQLQuery query = new HibernateQuery(sessionFactory.getCurrentSession());
+		
+		QCompany company = QCompany.company;
+		
+		List<Company> companyArray = query.from(company).list(company);		
 		log.info("end of search for company");
 		
 		return companyArray;

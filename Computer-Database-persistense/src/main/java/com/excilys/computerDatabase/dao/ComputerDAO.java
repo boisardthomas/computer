@@ -5,18 +5,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.sql.JoinType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.computerDatabase.bean.Computer;
+import com.excilys.computerDatabase.bean.QCompany;
+import com.excilys.computerDatabase.bean.QComputer;
+import com.mysema.query.jpa.JPQLQuery;
+import com.mysema.query.jpa.hibernate.HibernateQuery;
+import com.mysema.query.types.OrderSpecifier;
 
 @Repository
 public class ComputerDAO {
@@ -32,67 +32,66 @@ public class ComputerDAO {
 
 		log.info("Start search for computer");
 
-		Criteria cr = sessionFactory.getCurrentSession().createCriteria(Computer.class);
-		cr.createAlias("company", "company", JoinType.LEFT_OUTER_JOIN);
-		cr.add(Restrictions.or(Restrictions.like("name", "%"+search+"%"),
-				Restrictions.like("company.name", "%"+search+"%")));
+		
+		JPQLQuery query = new HibernateQuery(sessionFactory.getCurrentSession());
+		QComputer computer = QComputer.computer;
+		QCompany company = QCompany.company;		
+		
+		query.from(computer).leftJoin(computer.company,company);
 		
 		if (typeOrd != null && !typeOrd.equals("") && ord != null	&& !ord.equals("")) {
 			ord = (ord.equals("asc") || ord.equals("desc"))?ord:"asc";
-			String selectColOrd;
+			
 			switch (typeOrd) {
 				case "comp_name":
-					selectColOrd = "name";
+					query = (ord.equals("asc"))?query.orderBy(computer.name.asc()):query.orderBy(computer.name.desc());
 					break;
 				case "comp_intro":
-					selectColOrd = "introducedDate";
+					query = (ord.equals("asc"))?query.orderBy(computer.introducedDate.asc(),computer.name.asc()):query.orderBy(computer.introducedDate.desc(),computer.name.asc());
 					break;
 				case "comp_disc":
-					selectColOrd = "discontinuedDate";
+					query = (ord.equals("asc"))?query.orderBy(computer.discontinuedDate.asc(),computer.name.asc()):query.orderBy(computer.discontinuedDate.desc(),computer.name.asc());
 					break;
 				case "cpny_name":
-					selectColOrd = "company.name";
+					query = (ord.equals("asc"))?query.orderBy(company.name.asc(),computer.name.asc()):query.orderBy(company.name.desc(),computer.name.asc());
 					break;
 				default:
-					selectColOrd = "id";
+					query.orderBy(computer.id.asc());
 					break;
 			}
-			if(ord.equals("asc"))
-				cr.addOrder(Order.asc(selectColOrd));
-			else
-				cr.addOrder(Order.desc(selectColOrd));
-			cr.addOrder(Order.asc("name"));
+			
 		}
+		query.offset((page-1)*15);
+		query.limit(15);
 		
-		cr.setFirstResult((page - 1) * 15);
-		cr.setMaxResults(15);
-		
-		computerArray = cr.list();
+		computerArray = query.list(computer);
 		
 		log.info("End of search for computer");
 		return computerArray;
 	}
 
+	
+	
 	public Long nbComputer(String search) throws SQLException {
 		Long nbComputer = 0L;
 
-		Criteria cr = sessionFactory.getCurrentSession().createCriteria(Computer.class);
-		cr.createAlias("company", "company", JoinType.LEFT_OUTER_JOIN);
-		cr.add(Restrictions.or(Restrictions.like("name", "%"+search+"%"),
-				Restrictions.like("company.name", "%"+search+"%")));
-		cr.setProjection(Projections.rowCount());
+		JPQLQuery query = new HibernateQuery(sessionFactory.getCurrentSession());
 		
-		nbComputer = (Long) cr.list().get(0);
+		QComputer computer = QComputer.computer;
 		
+		nbComputer = (Long) query.from(computer).leftJoin(computer.company).count();
+				
 		log.info("Return number of computer");
 		return nbComputer;
 	}
 
 	public Computer getComputer(Long id) throws SQLException {
-		Computer computer = (Computer) sessionFactory.getCurrentSession().get(Computer.class,id);
+		JPQLQuery query = new HibernateQuery(sessionFactory.getCurrentSession());
+		QComputer computer = QComputer.computer;
+		Computer c = (Computer) query.from(computer).where(computer.id.eq(id)).uniqueResult(computer);
 			
 		log.info("Getting the computer");
-		return computer;
+		return c;
 	}
 
 	public Long addComputer(final Computer computer) throws SQLException {
