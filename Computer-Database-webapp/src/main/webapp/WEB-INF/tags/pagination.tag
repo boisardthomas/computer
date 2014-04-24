@@ -6,10 +6,9 @@
 
 <table>
 	<tr>
-		<c:set var="pages" value="${page}" />
-		<c:set var="nbComputer" value="${nbOfComputer}" />
-		<c:set var="nbOfPageF" value="${nbComputer/15.0}" />
-		<fmt:parseNumber var="nbOfPage" integerOnly="true" value="${nbOfPageF+(1-(nbOfPageF%1))%1}" /><%-- ${N+(1-(N%1))%1} --%>
+		<c:set var="pages" value="${page.number+1}" />
+		<c:set var="nbComputer" value="${page.totalElements}" />
+		<c:set var="nbOfPage" value="${page.totalPages}" />
 		<c:if test="${pages !=1}">
 			<a
 				href="ListComputer?page=1&search=${param.search}&typeOrd=${param.typeOrd}&ord=${param.ord}">1</a>

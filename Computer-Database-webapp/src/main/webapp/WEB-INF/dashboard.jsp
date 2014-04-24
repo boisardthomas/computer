@@ -6,7 +6,7 @@
 
 <section id="main">
 
-	<h1 id="homeTitle"><c:out value="${nbOfComputer}"></c:out> <spring:message code="label.computer"></spring:message></h1>
+	<h1 id="homeTitle"><c:out value="${page.totalElements}"></c:out> <spring:message code="label.computer"></spring:message></h1>
 	<div id="actions">
 		<form action="ListComputer" method="GET">
 			<div class="col-lg-2">
@@ -43,7 +43,7 @@
 			</thead>
 			<tbody>
 				
-				<c:forEach var="comp" items="${computerList}" >
+				<c:forEach var="comp" items="${page.content}" >
 					<tr>
 						<td><c:out value="${comp.name}"></c:out></td>
 						<td><c:out value="${comp.introducedDate}"></c:out></td>

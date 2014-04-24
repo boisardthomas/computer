@@ -1,8 +1,10 @@
 package com.excilys.computerDatabase.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,28 +27,28 @@ public class ListComputer {
 										, @RequestParam(value = "ord",required = false) String ord
 										, @RequestParam(value = "page",required = false) Integer page)										
 	{
-			ArrayList<Computer> computerArray;
-			Long nbComputer;
+			Page<Computer> computerPage;
 			
 			if(page==null)
 			{
 				page=1;
-				
+			}
+			if(ord==null || ord.equals("") || typeOrd==null)
+			{
+				ord="asc";
+				typeOrd="";
 			}
 			if(search!=null)
 			{
-				computerArray = cs.getList(search,typeOrd,ord,page);
-				nbComputer = cs.nbComputer(search);
+				computerPage = cs.getList(search,typeOrd,ord,page);
 			}
 			else
 			{
-				computerArray = cs.getList("",typeOrd,ord,page);
-				nbComputer = cs.nbComputer("");
+				computerPage = cs.getList("",typeOrd,ord,page);
 			}
-			map.addAttribute("computerList", computerArray);
-			map.addAttribute("nbOfComputer", nbComputer);
-			map.addAttribute("page",page);
-								
+						
+			map.addAttribute("page",computerPage);
+		
 			return "dashboard";
 	
 	}

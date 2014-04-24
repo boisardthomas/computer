@@ -33,7 +33,7 @@ public class CompanyService {
 		
 		try {
 			ldao.addLog("list all company", "select");
-			companies.addAll(cdao.getListCompany());
+			companies.addAll(cdao.findAll());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

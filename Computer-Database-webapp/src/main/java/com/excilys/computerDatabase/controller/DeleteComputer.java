@@ -18,7 +18,7 @@ public class DeleteComputer {
 	    
 
 	@RequestMapping(method = RequestMethod.GET)
-	protected String deleteComputer(ModelMap map, @RequestParam(value = "id",required = true) int id) {
+	protected String deleteComputer(ModelMap map, @RequestParam(value = "id",required = true) Long id) {
 								
 		cs.deleteComputer(id); 
 			
