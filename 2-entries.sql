@@ -617,3 +617,8 @@ insert into computer (id,name,introduced,discontinued,company_id) values (572,'D
 insert into computer (id,name,introduced,discontinued,company_id) values (573,'Gateway LT3103U','2008-01-01',null,null);
 insert into computer (id,name,introduced,discontinued,company_id) values (574,'iPhone 4S','2011-10-14',null,1);
 
+INSERT INTO users(username,password,enabled) VALUES ('toto','123456', TRUE);
+INSERT INTO users(username,password,enabled) VALUES ('alex','123456', TRUE);
+ 
+INSERT INTO user_roles (username, ROLE) VALUES ('toto', 'ROLE_ADMIN');
+INSERT INTO user_roles (username, ROLE) VALUES ('alex', 'ROLE_USER');

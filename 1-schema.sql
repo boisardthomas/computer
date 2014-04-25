@@ -28,6 +28,21 @@ CREATE TABLE `log` (
   PRIMARY KEY (`id`)
 );
 
+CREATE  TABLE users (
+  username VARCHAR(45) NOT NULL ,
+  password VARCHAR(45) NOT NULL ,
+  enabled TINYINT NOT NULL DEFAULT 1 ,
+  PRIMARY KEY (username));
+
+CREATE TABLE user_roles (
+  user_role_id INT(11) NOT NULL AUTO_INCREMENT,
+  username VARCHAR(45) NOT NULL,
+  ROLE VARCHAR(45) NOT NULL,
+  PRIMARY KEY (user_role_id),
+  UNIQUE KEY uni_username_role (ROLE,username),
+  KEY fk_username_idx (username),
+  CONSTRAINT fk_username FOREIGN KEY (username) REFERENCES users (username));
+  
 alter table computer add constraint fk_computer_company_1 foreign key (company_id) references company (id) on delete restrict on update restrict;
 create index ix_computer_company_1 on computer (company_id);
 

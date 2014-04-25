@@ -37,6 +37,7 @@ public class ComputerService {
 	{
 		Page<Computer> computers=null;
 		Direction dir = (ord.equals("asc"))?Direction.ASC:Direction.DESC;
+		
 		String selectColOrd;
 		switch (typeOrd) {
 			case "comp_name":

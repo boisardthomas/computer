@@ -11,6 +11,7 @@
 		<version-jodatime>2.3</version-jodatime>
 		<version-querydsl>3.3.2</version-querydsl>
 		<version-hibernate>4.3.4.Final</version-hibernate>
+		<spring.security.version>3.2.3.RELEASE</spring.security.version>
 	</properties>
 
 	<dependencyManagement>
@@ -148,6 +149,68 @@
 				<groupId>org.springframework.data</groupId>
 				<artifactId>spring-data-jpa</artifactId>
 				<version>1.5.1.RELEASE</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.springframework</groupId> <!-- Exclude Project-D from Project-B -->
+						<artifactId>spring-core</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.springframework</groupId> <!-- Exclude Project-D from Project-B -->
+						<artifactId>spring-tx</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.springframework</groupId> <!-- Exclude Project-D from Project-B -->
+						<artifactId>spring-aop</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<!-- Spring Security -->
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-web</artifactId>
+				<version>${spring.security.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.springframework</groupId> <!-- Exclude Project-D from Project-B -->
+						<artifactId>spring-core</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.springframework</groupId> <!-- Exclude Project-D from Project-B -->
+						<artifactId>spring-tx</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.springframework</groupId> <!-- Exclude Project-D from Project-B -->
+						<artifactId>spring-aop</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-config</artifactId>
+				<version>${spring.security.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.springframework</groupId> <!-- Exclude Project-D from Project-B -->
+						<artifactId>spring-core</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.springframework</groupId> <!-- Exclude Project-D from Project-B -->
+						<artifactId>spring-tx</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.springframework</groupId> <!-- Exclude Project-D from Project-B -->
+						<artifactId>spring-aop</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<!-- Spring Security JSP Taglib -->
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-taglibs</artifactId>
+				<version>${spring.security.version}</version>
 				<exclusions>
 					<exclusion>
 						<groupId>org.springframework</groupId> <!-- Exclude Project-D from Project-B -->

@@ -15,7 +15,6 @@ public interface ComputerDAO extends JpaRepository<Computer, Long>{
 	
 	final String FIND_BY_NAME = "select computer from Computer computer left join computer.company company where computer.name like %:searchName% or company.name like %:searchName%";
 	
-
 	@Query(FIND_BY_NAME)
     public List<Computer> findByComputerOrCompanyName(@Param("searchName") String searchName);	
 	

@@ -85,9 +85,8 @@ public class AddComputer {
 						
 		cpts.addComputer(Mapper.convertToComputer(cdto));
 			
-		int page = (int)(Math.ceil(cpts.nbComputer("")/15.0));
 		
-		mav.setViewName("redirect:/ListComputer?page="+page);
+		mav.setViewName("redirect:/ListComputer");
 		
 		String message = "New computer "+cdto.getName()+" was successfully created.";
 		
