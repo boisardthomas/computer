@@ -2,19 +2,20 @@ package com.excilys.computerDatabase.bean;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.LocalDate;
 
 @Entity
 @Table(name="computer")
+@XmlRootElement
 public class Computer {
 
 	@Id

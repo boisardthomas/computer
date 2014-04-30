@@ -11,7 +11,7 @@
 		<version-jodatime>2.3</version-jodatime>
 		<version-querydsl>3.3.2</version-querydsl>
 		<version-hibernate>4.3.4.Final</version-hibernate>
-		<spring.security.version>3.2.3.RELEASE</spring.security.version>
+		<spring-security-version>3.2.3.RELEASE</spring-security-version>
 	</properties>
 
 	<dependencyManagement>
@@ -169,7 +169,7 @@
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-web</artifactId>
-				<version>${spring.security.version}</version>
+				<version>${spring-security-version}</version>
 				<exclusions>
 					<exclusion>
 						<groupId>org.springframework</groupId> <!-- Exclude Project-D from Project-B -->
@@ -189,7 +189,7 @@
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-config</artifactId>
-				<version>${spring.security.version}</version>
+				<version>${spring-security-version}</version>
 				<exclusions>
 					<exclusion>
 						<groupId>org.springframework</groupId> <!-- Exclude Project-D from Project-B -->
@@ -210,7 +210,7 @@
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-taglibs</artifactId>
-				<version>${spring.security.version}</version>
+				<version>${spring-security-version}</version>
 				<exclusions>
 					<exclusion>
 						<groupId>org.springframework</groupId> <!-- Exclude Project-D from Project-B -->
@@ -257,6 +257,6 @@
 		<module>Computer-Database-service</module>
 		<module>Computer-Database-persistense</module>
 		<module>Computer-Database-binding</module>
-    <module>Computer-Database-webService</module>
+    	<module>Computer-Database-webService</module>
   </modules>
 </project>

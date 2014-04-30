@@ -6,12 +6,7 @@
 				http://jax-ws.dev.java.net/spring/core http://jax-ws.java.net/spring/core.xsd
 				http://jax-ws.dev.java.net/spring/servlet http://jax-ws.java.net/spring/servlet.xsd">
 
-	<import resource="classpath:/datasource.xml" />	
-	<import resource="classpath:/hibernate.xml" />
-  	<import resource="classpath:/Spring-core.xml" />
-  	<import resource="classpath:/Spring-service.xml" />
-  	<import resource="classpath:/Spring-persistense.xml" />
-  	<import resource="classpath:/Spring-binding.xml" />
+	<import resource="classpath:/Spring-service.xml" />
   	
 	<bean id="myService" class="com.excilys.computerDatabase.webService.CompanyWebService"></bean>
 	<wss:binding url="/companyService">
