@@ -3,23 +3,34 @@
  
 	<display-name>Spring + JAX-WS</display-name>
  
-	<servlet>
-    	        <servlet-name>jaxws-servlet</servlet-name>
-    	       <servlet-class>
-    		          com.sun.xml.ws.transport.http.servlet.WSSpringServlet
-    	        </servlet-class>
-  	</servlet>
- 
-	<servlet-mapping>
-                <servlet-name>jaxws-servlet</servlet-name>
-                <url-pattern>/companyService</url-pattern>
-         </servlet-mapping>
- 
-         <!-- Register Spring Listener -->
+ 	<!-- Register Spring Listener -->
   	<listener>
     	        <listener-class>
     		     org.springframework.web.context.ContextLoaderListener
     	        </listener-class>
   	</listener>
+ 
+ 	<servlet>
+		<servlet-name>jersey-serlvet</servlet-name>
+		<servlet-class>
+			com.sun.jersey.spi.spring.container.servlet.SpringServlet
+		</servlet-class>
+		<init-param>
+			<param-name>
+            	com.sun.jersey.config.property.packages
+            </param-name>
+			<param-value>com.excilys.computerDatabase.webService</param-value>
+		</init-param>
+		<init-param>
+            <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+            <param-value>true</param-value>
+        </init-param>		
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+ 
+    <servlet-mapping>
+		<servlet-name>jersey-serlvet</servlet-name>
+		<url-pattern>/rest/*</url-pattern>
+	</servlet-mapping>
  
 </web-app>

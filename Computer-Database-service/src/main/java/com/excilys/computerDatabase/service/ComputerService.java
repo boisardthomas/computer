@@ -73,6 +73,12 @@ public class ComputerService {
 	}
 	
 	@Transactional
+	public List<Computer> findAll()
+	{
+		return computerDAO.findAll();
+	}
+	
+	@Transactional
 	public Long nbComputer(String search)
 	{
 		Long nbComputer =0L;
