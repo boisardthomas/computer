@@ -14,9 +14,9 @@ public class Company {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id")
-	public Long id;
+	private Long id;
 	@Column(name="name")
-	public String name;
+	private String name;
 	
 	public Company(){}
 	
